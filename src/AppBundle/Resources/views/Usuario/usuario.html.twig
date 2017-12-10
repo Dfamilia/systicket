@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Usuario {% endblock %}
+
+{% block event_usuario %} active {% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-sm">
+      <h1>Manejador de Usuarios</h1>
+    </div>
+    <div class="col-sm pull-right">
+         <a class="btn btn-warning pull-right" href="{{ path('nuevousuario') }}" role="button"><b>Crear Usuario</b></a>  
+    </div>
+  </div>
+      
+
+
+    <table class="table table-bordered">
+    <caption><h4>Lista de Usuarios</h4></caption>
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Username</th>
+        <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <td>
+            <a class="btn btn-outline-success" href="#" role="button">Edit</a> &nbsp;
+            <a class="btn btn-outline-danger" href="#" role="button">Del</a>
+        </td>
+        </tr>
+        <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+        </tr>
+        <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+        </tr>
+        
+    </tbody>
+    </table>
+      
+
+{% endblock %}
+
