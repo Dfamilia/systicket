@@ -24,21 +24,21 @@ class Roles
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombre", type="text")
+     * @ORM\Column(name="Nombre", type="string", length=100)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="DepartamentoProyecto", type="text")
+     * @ORM\Column(name="DepartamentoProyecto", type="string", length=100)
      */
     private $departamentoProyecto;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Descripcion", type="text")
+     * @ORM\Column(name="Descripcion", type="string", length=100)
      */
     private $descripcion;
 

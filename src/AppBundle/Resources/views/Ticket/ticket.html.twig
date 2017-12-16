@@ -5,7 +5,56 @@
 {% block event_ticket %} active {% endblock %}
 
 {% block body %}
- <h1> Ticket </h1> 
 
- {% endblock %}
 
+    <table class="table table-bordered table-sm">
+    
+        <caption><h4>Lista de Tickets</h4></caption>
+    
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Fecha Creado</th>
+            <th scope="col" class="text-center">Fecha Status</th>
+            <th scope="col" class="text-center">Fecha Cierre</th>
+            <th scope="col" class="text-center">Descripcion</th>
+            <th scope="col" class="text-center">Categoria</th>
+            <th scope="col" class="text-center">Estado</th>
+            <th scope="col" class="text-center">Prioridad</th>
+            <th scope="col" class="text-center">Solicitante</th>
+            <th scope="col" class="text-center">Asignado</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {# for items in ticketList }
+
+                <tr>
+                    <th scope="row" class="text-center"> {{ items.id }} </th>
+                    <td> {{ items.descripcionProblema }}</td>
+                    <td> {{ items.categoria }}</td>
+                    <td> {{ items.username }}</td>
+                    <td> {{ items.userPass }}</td>
+                    <td> {{ items.tipoUser }}</td>
+                    <td> {{ items.rolID }}</td>
+                    <td> {{ items.estado }}</td>
+                    <td> { dump(items.fechaRegistro) #}</td>
+
+                    <td class="text-center">
+                        <a class="btn btn-outline-success" href="{# path('actualizar_usuario') #}" role="button">Edit</a>&nbsp;
+                        <a class="btn btn-outline-danger" href="{# path('borrar_usuario') #}" role="button">Del</a>
+                    </td>
+                </tr>
+
+            {# endfor #}
+            
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-6">
+            <a class="btn btn-primary " href="{{ path('ticket') }}" role="button"><b>Crear Usuario</b></a>
+        </div>
+    </div> 
+
+{% endblock %}

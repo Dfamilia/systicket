@@ -4,9 +4,98 @@
 
 
 {% block body %} 
-<h1> Crear Usuario </h1> 
+<h1> Crear Usuario </h1>
 
-{{form(usuarioForm)}}
+    <form>
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input type="text" class="form-control" id="apellido" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <input type="text" class="form-control" id="usuario" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="usuarioPass">Usuario Password</label>
+            <input type="password" class="form-control" id="usuarioPass" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="usuarioTipo">Usuario Tipo</label>
+            <input type="text" class="form-control" id="usuarioTipo" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="idRol">idRol</label>
+            <input type="text" class="form-control" id="idRol" placeholder="---">
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado</label>
+            <input type="text" class="form-control" id="estado" placeholder="---">
+        </div>
+
+
+        <button type="button" class="btn btn-success" id="addUsuario">Guardar</button>
+        <a class="btn btn-danger" href="{{ path('usuario') }}">Cancelar</a>
+
+    </form>
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+
+        function  addUsuario(usuario) {
+
+            //alert(JSON.stringify(usuario));
+
+
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify(usuario),
+                url: "http://systicket/app_dev.php/usuario/new/",
+                error: function() {
+
+                },
+                success: function (data) {
+                    window.location = Routing.generate('usuario');
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            $('#addUsuario').click(function () {
+
+                var nombre = $('#nombre').val();
+                var apellido = $('#apellido').val();
+                var usuario = $('#usuario').val();
+                var clave = $('#usuarioPass').val();
+                var tipo = $('#usuarioTipo').val();
+                var rolid = $('#idRol').val();
+                var estado = $('#estado').val();
+
+                //  alert(name+", "+email);
+
+                addUsuario({ nombre : nombre, apellido: apellido, username: usuario, userPass: clave, tipoUser: tipo, rolID: rolid, estado: estado });
+
+            });
+
+
+        });
+    </script>
+
+
+{% endblock %}

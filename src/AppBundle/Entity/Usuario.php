@@ -24,35 +24,35 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombre", type="text")
+     * @ORM\Column(name="Nombre", type="string", length=100)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Apellido", type="text")
+     * @ORM\Column(name="Apellido", type="string", length=100)
      */
     private $apellido;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Username", type="text")
+     * @ORM\Column(name="Username", type="string", length=100)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="UserPass", type="text")
+     * @ORM\Column(name="UserPass", type="string", length=100)
      */
     private $userPass;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="TipoUser", type="text")
+     * @ORM\Column(name="TipoUser", type="string", length=100)
      */
     private $tipoUser;
 
@@ -66,14 +66,14 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="Estado", type="text")
+     * @ORM\Column(name="Estado", type="string", length=100)
      */
     private $estado;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaRegistro", type="datetime")
+     * @ORM\Column(name="FechaRegistro", type="string", length=20)
      */
     private $fechaRegistro;
 

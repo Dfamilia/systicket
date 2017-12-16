@@ -24,7 +24,7 @@ class CategoriaTicket
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombre", type="text")
+     * @ORM\Column(name="Nombre", type="string", length=100)
      */
     private $nombre;
 

@@ -5,55 +5,105 @@
 {% block event_usuario %} active {% endblock %}
 
 {% block body %}
-  <div class="row">
-    <div class="col-sm">
-      <h1>Manejador de Usuarios</h1>
-    </div>
-    <div class="col-sm pull-right">
-         <a class="btn btn-warning pull-right" href="{{ path('nuevousuario') }}" role="button"><b>Crear Usuario</b></a>  
-    </div>
-  </div>
-      
 
 
-    <table class="table table-bordered">
-    <caption><h4>Lista de Usuarios</h4></caption>
-    <thead class="thead-dark">
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Username</th>
-        <th scope="col">Options</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>
-            <a class="btn btn-outline-success" href="#" role="button">Edit</a> &nbsp;
-            <a class="btn btn-outline-danger" href="#" role="button">Del</a>
-        </td>
-        </tr>
-        <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        </tr>
-        <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-        </tr>
-        
-    </tbody>
+    <table class="table table-bordered table-sm">
+    
+        <caption><h4>Lista de Usuarios</h4></caption>
+    
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Nombre</th>
+            <th scope="col" class="text-center">Apellido</th>
+            <th scope="col" class="text-center">Usuario</th>
+            <th scope="col" class="text-center">Clave</th>
+            <th scope="col" class="text-center">Tipo</th>
+            <th scope="col" class="text-center">Rol</th>
+            <th scope="col" class="text-center">Estado</th>
+            <th scope="col" class="text-center">Registro/Actualizacion</th>
+            <th scope="col" class="text-center">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for items in usuarioList %}
+
+                <tr>
+                    <th scope="row" class="text-center" id="id"> {{ items.id }} </th>
+                    <td> {{ items.nombre }}</td>
+                    <td> {{ items.apellido }}</td>
+                    <td> {{ items.username }}</td>
+                    <td> {{ items.userPass }}</td>
+                    <td> {{ items.tipoUser }}</td>
+                    <td> {{ items.rolID }}</td>
+                    <td> {{ items.estado }}</td>
+                    <td class="text-center"> {{ items.fechaRegistro }}</td>
+                    <td class="text-center">
+                    
+                       {# <a href="{{ Router('nombrerutainterna', {id: items.id}) }}"></a>  despues de instalar y conf FOSROUTIN #}
+
+                        <a class="btn btn-outline-success" href="{{ path('editUsuario', {id: items.id}) }}" role="button">Edit</a>&nbsp;
+                        <a class="btn btn-outline-danger" href="{{ path('delUsuario', {id: items.id}) }}" role="button">Del</a>
+
+                        {#<button type="button" class="btn btn-default" id="delbutton"><span>Borra</span></button>#}
+
+                    </td>
+                </tr>
+
+            {% endfor %}
+            
+        </tbody>
     </table>
-      
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-6">
+            <a class="btn btn-primary " href="{{  path('nuevoUsuario') }}" role="button"><b>Crear Usuario</b></a>
+        </div>
+    </div> 
 
 {% endblock %}
 
+{% block javascripts %}
+    {#{{ parent() }}#}
+
+    {#<script>#}
+
+
+        {#function  delUsuario(usuario) {#}
+
+            {#//alert(JSON.stringify(usuario));#}
+
+
+            {#$.ajax({#}
+                {#type: "DELETE",#}
+                {#data: JSON.stringify(usuario),#}
+                {#url: "http://systicket/app_dev.php/usuario/"+usuario.id+"//",#}
+                {#error: function() {#}
+
+                {#},#}
+                {#success: function (data) {#}
+                    {#window.location = Routing.generate('usuario');#}
+                {#}#}
+            {#});#}
+
+        {#}#}
+
+        {#$(document).ready(function () {#}
+
+            {#$('#addUsuario').click(function () {#}
+
+                {#var id = $('#id').val();#}
+
+                {#//  alert(name+", "+email);#}
+
+                {#addUsuario({ id: id });#}
+
+            {#});#}
+
+
+        {#});#}
+    {#</script>#}
+
+
+{% endblock %}

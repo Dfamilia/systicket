@@ -45,28 +45,28 @@ class Ticket
     /**
      * @var string
      *
-     * @ORM\Column(name="DescripcionProblema", type="text")
+     * @ORM\Column(name="DescripcionProblema", type="string", length=100)
      */
     private $descripcionProblema;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Categoria", type="text")
+     * @ORM\Column(name="Categoria", type="string", length=100)
      */
     private $categoria;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Estado", type="text")
+     * @ORM\Column(name="Estado", type="string", length=100)
      */
     private $estado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Prioridad", type="text")
+     * @ORM\Column(name="Prioridad", type="string", length=100)
      */
     private $prioridad;
 

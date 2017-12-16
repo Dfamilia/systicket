@@ -45,7 +45,7 @@ class Notas
     /**
      * @var string
      *
-     * @ORM\Column(name="DescripcionNota", type="text")
+     * @ORM\Column(name="DescripcionNota", type="string", length=100)
      */
     private $descripcionNota;
 

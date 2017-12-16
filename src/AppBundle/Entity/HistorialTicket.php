@@ -45,7 +45,7 @@ class HistorialTicket
     /**
      * @var string
      *
-     * @ORM\Column(name="Estado", type="text")
+     * @ORM\Column(name="Estado", type="string", length=100)
      */
     private $estado;
 
