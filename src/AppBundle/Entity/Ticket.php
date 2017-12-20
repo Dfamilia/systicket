@@ -24,21 +24,21 @@ class Ticket
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaCreado", type="datetime")
+     * @ORM\Column(name="FechaCreado", type="string", length=20)
      */
     private $fechaCreado;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaStatus", type="datetime")
+     * @ORM\Column(name="FechaStatus", type="string", length=20)
      */
     private $fechaStatus;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaCierre", type="datetime")
+     * @ORM\Column(name="FechaCierre", type="string", length=20)
      */
     private $fechaCierre;
 

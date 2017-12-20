@@ -33,12 +33,32 @@ class UsuarioController extends Controller
      */
     public function indexAction()
     {
-        // replace this example code with whatever you need
+        // Array de arreglos de datos usuario["id"], rol["nombre"]
+        $usuarioRol;
 
         $datosUsuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
 
+        $datosRolesBD = $this->getDoctrine()->getRepository('AppBundle:Roles');
+
+        //script que busca y crea un array concatenando usuario.id con rol.nombre
         $usuarioList = $datosUsuarioBD->findAll();
-        return $this->render('AppBundle:Usuario:usuario.html.twig',array("usuarioList"=>$usuarioList));
+
+
+        foreach ($usuarioList as $usuario){
+
+            $id = $usuario->getRolID();
+
+            $datosRol = $datosRolesBD->find($id);
+
+            $nombreRol = $datosRol->getNombre();
+
+
+            $usuarioRol[] = ["id"=>"$id", "nombre"=>"$nombreRol"];
+
+        }
+
+
+        return $this->render('AppBundle:Usuario:usuario.html.twig',array("usuarioList"=>$usuarioList, "usuarioRol"=>$usuarioRol));
     }
 
     //-------------------------------------------------------------------------------------------------------------
@@ -51,7 +71,12 @@ class UsuarioController extends Controller
     public function newAction()
     {
 
-        return $this->render('AppBundle:Usuario:nuevousuario.html.twig');
+        $rolDataBD = $this->getDoctrine()->getRepository('AppBundle:Roles');
+
+        $rolOptions = $rolDataBD->findAll();
+
+
+        return $this->render('AppBundle:Usuario:nuevousuario.html.twig',array("rolOptions"=>$rolOptions));
     }
 
 
@@ -107,7 +132,7 @@ class UsuarioController extends Controller
 
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
-        $date = $date->format("y-M-d H:M a");
+        $date = $date->format("y-M-d H:m a");
 
 
 
@@ -181,12 +206,14 @@ class UsuarioController extends Controller
         return new JsonResponse($updusuario);
     }
 
+    //----------- Borrar Usuario -----------------//
+
     /**
      * @Route("/{id}//",
      *     name="delUsuario",
      *     requirements={"id"="\d+"},
      *     options={"expose"=true})
-     * @param Request $request
+     *  @param Request $request
      * @param Usuario $delusario
      * @return JsonResponse
      */

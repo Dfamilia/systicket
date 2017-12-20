@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>Edit User</h1>
+
+
+    <form>
+
+        {# Input oculto para mantener el ID del Usuario #}
+        <input type="hidden" id="id" value="{{ ticket.id }}">
+
+        <div class="form-group">
+            <label for="descripcion">Descripcion</label>
+            <input type="text"  class="form-control" id="descripcion" value="{{ ticket.descripcionProblema }}">
+        </div>
+
+        <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <input type="text" class="form-control" id="categoria" value="{{ ticket.categoria }}">
+        </div>
+
+        <div class="form-group">
+            <label for="estado">Estado</label>
+            <input type="text" class="form-control" id="estado" value="{{ ticket.estado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="prioridad">Prioridad</label>
+            <input type="text" class="form-control" id="prioridad" value="{{ ticket.prioridad }}">
+        </div>
+
+        <div class="form-group">
+            <label for="solicitante">Solicitante</label>
+            <input type="text" class="form-control" id="solicitante" value="{{ ticket.usuarioSolicitanteID }}">
+        </div>
+
+        <div class="form-group">
+            <label for="usuarioAsig">Usuario Asignado</label>
+            <input type="text" class="form-control" id="usuarioAsig" value="{{ ticket.usuarioAsignadoID }}">
+        </div>
+
+        <button type="button" id="udpTicket" class="btn btn-success"> <span>Actualizar</span> </button>
+        <a class="btn btn-danger" href="{{ path('ticket') }}"><span>Cancelar</span> </a>
+
+    </form>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+     <script>
+
+         function  updTicket(ticket) {
+            // alert(JSON.stringify(ticket));
+
+             $.ajax({
+                 type: "PUT",
+                 data: JSON.stringify(ticket),
+                 url: "http://systicket/app_dev.php/ticket/"+ticket.id+"/",
+                 error: function() {
+
+                 },
+                 success: function (data) {
+
+                     window.location = Routing.generate('ticket');
+                 }
+             });
+
+         }
+
+         $(document).ready(function () {
+
+             $('#updTicket').click(function () {
+
+                 var descripcion = $('#descripcion').val();
+                 var categoria = $('#categoria').val();
+                 var estado = $('#estado').val();
+                 var prioridad = $('#prioridad').val();
+                 var solicitante = $('#solicitante').val();
+                 var usuarioAsig = $('#usuarioAsig').val();
+
+                 updTicket({ descripcionProblema : descripcion, categoria: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: solicitante, usuarioAsignadoID: usuarioAsig });
+
+             });
+
+
+         });
+
+   
+{% endblock %}
+
