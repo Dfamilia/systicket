@@ -32,17 +32,34 @@
 
         <div class="form-group">
             <label for="usuarioTipo">Tipo Usuario</label>
-            <input type="text" class="form-control" id="usuarioTipo" value="{{ usuario.tipoUser }}">
+            <select id="usuarioTipo" class="form-control">
+                <option value="{{ usuario.tipoUser }}">{{ usuario.tipoUser }}</option>
+                <option value="Cliente">Cliente</option>
+                <option value="Soporte">Soporte</option>
+            </select>
         </div>
 
         <div class="form-group">
-            <label for="idRol">rol</label>
-            <input type="text" class="form-control" id="idRol" value="{{ usuario.rolID }}">
+            <label for="idRol">Rol</label>
+            <select class="form-control" id="idRol">
+
+                <option value="{{ rolDefault["id"] }}"> {{ rolDefault["nombre"] }}</option>
+                {% for rol in rolOptions %}
+                    <option value="{{ rol.id }}">{{ rol.nombre }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <div class="form-group">
             <label for="estado">Estado</label>
-            <input type="text" class="form-control" id="estado" value="{{ usuario.estado }}">
+            <select name="estado" id="estado" class="form-control">
+
+                <option value="{{ usuario.estado }}">{{ usuario.estado }}</option>
+                <option value="activo">Activo</option>
+                <option value="desactivado">Desactivado</option>
+
+            </select>
         </div>
 
         <button type="button" id="udpUsuario" class="btn btn-success"> <span>Actualizar</span> </button>
@@ -60,12 +77,12 @@
      <script>
 
          function  udpUsuario(usuario) {
-             alert(JSON.stringify(usuario));
+             //alert(JSON.stringify(usuario));
 
              $.ajax({
                  type: "PUT",
                  data: JSON.stringify(usuario),
-                 url: "http://systicket/app_dev.php/usuario/"+usuario.id+"/",
+                 url: Routing.generate('updUsuario', {id : usuario.id}),
                  error: function() {
 
                  },
@@ -86,9 +103,9 @@
                  var apellido = $('#apellido').val();
                  var usuario = $('#usuario').val();
                  var clave = $('#usuarioPass').val();
-                 var tipo = $('#usuarioTipo').val();
+                 var tipo = $('#usuarioTipo option:selected').val();
                  var rolid = $('#idRol').val();
-                 var estado = $('#estado').val();
+                 var estado = $('#estado option:selected').val();
 
 
                  udpUsuario({ id: id, nombre : nombre, apellido: apellido, username: usuario, userPass: clave, tipoUser: tipo, rolID: rolid, estado: estado });

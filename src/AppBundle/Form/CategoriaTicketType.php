@@ -22,7 +22,9 @@ class CategoriaTicketType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\CategoriaTicket'
+            'data_class' => 'AppBundle\Entity\CategoriaTicket',
+            'csrf_protection'=> false,
+            'allow_extra_fields'=>true
         ));
     }
 

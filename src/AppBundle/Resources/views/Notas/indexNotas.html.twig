@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Roles {% endblock %}
+
+{% block body %}
+
+    <div class="row">
+
+        <div class="col-lg-3 offset-3">
+            <a class="btn btn-info " href="{{ path('ticket') }}" role="button"><b>Regresar a Ticket</b></a>
+            <a class="btn btn-success " href="{{ path('notasNew', {id: notasW[0].ticketID, usuario: notasW[0].usuarioID}) }}" role="button"><b>Nueva Nota</b></a>
+            {#{{ dump(notasW[0].ticketID) }}#}
+        </div>
+
+        <div class="col-lg-6">
+            <h1>Lista de Notas</h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6  offset-3">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+
+                <th scope="col" class="text-center" >#</th>
+                <th scope="col" class="" >Fecha Creado</th>
+                <th scope="col" class="" >Usuario</th>
+                <th scope="col" class="" >Ticket</th>
+                <th scope="col" class="" >Descripcion</th>
+                <th scope="col" class="text-center" >Acciones</th>
+
+                </thead>
+                <tbody>
+
+                {% set counter = 1 %}
+                {% for item in notasW %}
+
+                    <tr>
+                        <th scope="row" class="text-center">{{ counter }}</th>
+                        <td >{{ item.fechaCreado }}</td>
+                        <td >{{ item.usuarioID }}</td>
+                        <td >{{ item.ticketID }}</td>
+                        <td >{{ item.descripcionNota }}</td>
+                        <td class="text-center">
+                            <a href="" class="btn btn-danger" role="button">Del</a>
+                        </td>
+                    </tr>
+                    {% set counter = counter + 1  %}
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{#plantilla para los index#}
+
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %} Roles {% endblock %}#}
+
+{#{% block body %}#}
+
+    {#<div class="row">#}
+
+        {#<div class="col-lg-3 offset-3">#}
+            {#<a class="btn btn-success " href="" role="button"><b>Crear Ticket</b></a>#}
+        {#</div>#}
+
+        {#<div class="col-lg-6">#}
+            {#<h1>Lista de Roles</h1>#}
+        {#</div>#}
+
+    {#</div>#}
+
+    {#<div class="row">#}
+        {#<div class="col-lg-6  offset-3">#}
+            {#<table class="table table-sm">#}
+                {#<thead class="thead-dark">#}
+
+                {#<th scope="col" class="text-center" >#</th>#}
+                {#<th scope="col" class="" >Rol</th>#}
+                {#<th scope="col" class="text-center" >Acciones</th>#}
+
+                {#</thead>#}
+                {#<tbody>#}
+
+                {#{% set counter = 1 %}#}
+                {#{% for %}#}
+
+                    {#<tr>#}
+                        {#<th scope="row" class="text-center">{{ counter }}</th>#}
+                        {#<td ></td>#}
+                        {#<td class="text-center">#}
+                            {#<a href="" class="btn btn-outline-success" role="button">Edit</a>#}
+                            {#<a href="" class="btn btn-danger" role="button">Del</a>#}
+                        {#</td>#}
+                    {#</tr>#}
+                    {#{% set counter = counter + 1  %}#}
+                {#{% endfor %}#}
+
+                {#</tbody>#}
+            {#</table>#}
+
+        {#</div>#}
+    {#</div>#}
+
+{#{% endblock %}#}

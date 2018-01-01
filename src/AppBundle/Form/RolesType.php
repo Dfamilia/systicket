@@ -22,7 +22,9 @@ class RolesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Roles'
+            'data_class' => 'AppBundle\Entity\Roles',
+            'csrf_protection'=> false,
+            'allow_extra_fields'=>true
         ));
     }
 

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualizar Categoria{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-3">
+                <h1> Actualizar Categoria </h1>
+                <input type="hidden" id="id" value="{{ categoriaW.id }}">
+
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="nombre" value="{{ categoriaW.nombre }}">
+                    </div>
+
+                    <button class="btn btn-success" id="updCategoria"><span>Guardar</span></button>
+                    <a href="{{ path('categoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function updCategoria(categoria){
+
+            //alert(JSON.stringify(categoria));
+
+            $.ajax({
+
+                type:"PUT",
+                data: JSON.stringify(categoria),
+                url: Routing.generate('updCategoria', {id: categoria.id }),
+                error: function () {
+
+                },
+                success: function (data) {
+
+                    window.location = Routing.generate('categoria');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $('#updCategoria').click(function () {
+
+                var nombre = $('#nombre').val();
+                var id = $('#id').val();
+
+                updCategoria({ id: id, nombre : nombre });
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

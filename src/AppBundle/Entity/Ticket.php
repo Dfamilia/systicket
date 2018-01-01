@@ -22,39 +22,32 @@ class Ticket
     private $id;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="FechaCreado", type="string", length=20)
+     * @ORM\Column(name="FechaCreado", type="string", length=100)
      */
     private $fechaCreado;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="FechaStatus", type="string", length=20)
+     * @ORM\Column(name="FechaStatus", type="string", length=100)
      */
     private $fechaStatus;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="FechaCierre", type="string", length=20)
+     * @ORM\Column(name="FechaCierre", type="string", length=100)
      */
     private $fechaCierre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="DescripcionProblema", type="string", length=100)
+     * @ORM\Column(name="DescripcionProblema", type="string", length=255)
      */
     private $descripcionProblema;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Categoria", type="string", length=100)
-     */
-    private $categoria;
 
     /**
      * @var string
@@ -71,6 +64,13 @@ class Ticket
     private $prioridad;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="Categoria", type="string", length=100)
+     */
+    private $categoriaID;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="UsuarioSolicitanteID", type="integer")
@@ -83,6 +83,13 @@ class Ticket
      * @ORM\Column(name="UsuarioAsignadoID", type="integer")
      */
     private $usuarioAsignadoID;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Titulo", type="string", length=100)
+     */
+    private $titulo;
 
 
     /**
@@ -98,7 +105,7 @@ class Ticket
     /**
      * Set fechaCreado
      *
-     * @param \DateTime $fechaCreado
+     * @param string $fechaCreado
      *
      * @return Ticket
      */
@@ -112,7 +119,7 @@ class Ticket
     /**
      * Get fechaCreado
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaCreado()
     {
@@ -122,7 +129,7 @@ class Ticket
     /**
      * Set fechaStatus
      *
-     * @param \DateTime $fechaStatus
+     * @param string $fechaStatus
      *
      * @return Ticket
      */
@@ -136,7 +143,7 @@ class Ticket
     /**
      * Get fechaStatus
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaStatus()
     {
@@ -146,7 +153,7 @@ class Ticket
     /**
      * Set fechaCierre
      *
-     * @param \DateTime $fechaCierre
+     * @param string $fechaCierre
      *
      * @return Ticket
      */
@@ -160,7 +167,7 @@ class Ticket
     /**
      * Get fechaCierre
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaCierre()
     {
@@ -189,30 +196,6 @@ class Ticket
     public function getDescripcionProblema()
     {
         return $this->descripcionProblema;
-    }
-
-    /**
-     * Set categoria
-     *
-     * @param string $categoria
-     *
-     * @return Ticket
-     */
-    public function setCategoria($categoria)
-    {
-        $this->categoria = $categoria;
-
-        return $this;
-    }
-
-    /**
-     * Get categoria
-     *
-     * @return string
-     */
-    public function getCategoria()
-    {
-        return $this->categoria;
     }
 
     /**
@@ -264,6 +247,30 @@ class Ticket
     }
 
     /**
+     * Set categoriaID
+     *
+     * @param string $categoriaID
+     *
+     * @return Ticket
+     */
+    public function setCategoriaID($categoriaID)
+    {
+        $this->categoriaID = $categoriaID;
+
+        return $this;
+    }
+
+    /**
+     * Get categoriaID
+     *
+     * @return string
+     */
+    public function getCategoriaID()
+    {
+        return $this->categoriaID;
+    }
+
+    /**
      * Set usuarioSolicitanteID
      *
      * @param integer $usuarioSolicitanteID
@@ -309,6 +316,30 @@ class Ticket
     public function getUsuarioAsignadoID()
     {
         return $this->usuarioAsignadoID;
+    }
+
+    /**
+     * Set titulo
+     *
+     * @param string $titulo
+     *
+     * @return Ticket
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
     }
 }
 

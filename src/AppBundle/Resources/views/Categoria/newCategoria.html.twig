@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Categoria{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-3">
+                <h1> Crear Categoria </h1>
+
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="nombre" placeholder="---">
+                    </div>
+
+                    <button class="btn btn-success" id="addCategoria"><span>Guardar</span></button>
+                    <a href="{{ path('categoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function addCategoria(categoria){
+
+            //alert(Routing.generate('postCategoria'));
+
+
+            $.ajax({
+
+                type:"POST",
+                data: JSON.stringify(categoria),
+                url: Routing.generate('postCategoria'),
+                error: function () {
+
+                },
+                success: function (data) {
+
+                    window.location = Routing.generate('categoria');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $('#addCategoria').click(function () {
+
+                var nombre = $('#nombre').val();
+
+
+               addCategoria({ nombre : nombre });
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

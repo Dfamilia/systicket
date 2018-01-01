@@ -32,13 +32,14 @@
                 <tr>
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Fecha Creado</th>
-                    <th scope="col" class="text-center">Descripcion</th>
-                    <th scope="col" class="text-center">Categoria</th>
-                    <th scope="col" class="text-center">Estado</th>
+                    <th scope="col" class="">Titulo</th>
+                    <th scope="col" class="">Descripcion</th>
+                    <th scope="col" class="">Categoria</th>
+                    <th scope="col" class="">Estado</th>
                     <th scope="col" class="text-center">Fecha Estado</th>
-                    <th scope="col" class="text-center">Prioridad</th>
-                    <th scope="col" class="text-center">Solicitante</th>
-                    <th scope="col" class="text-center">Asignado</th>
+                    <th scope="col" class="">Prioridad</th>
+                    <th scope="col" class="">Solicitante</th>
+                    <th scope="col" class="">Asignado</th>
                     <th scope="col" class="text-center">Acciones</th>
                 </tr>
                 </thead>
@@ -49,8 +50,9 @@
                     <tr>
                         <th scope="row" class="text-center"> {{ items.id }} </th>
                         <td class="text-center"> {{ items.fechaCreado }}</td>
+                        <td class=""> {{ items.titulo }}</td>
                         <td> {{ items.descripcionProblema }}</td>
-                        <td> {{ items.categoria }}</td>
+                        <td> {{ items.categoriaID }}</td>
                         <td> {{ items.estado }}</td>
                         <td class="text-center"> {{ items.fechaStatus }}</td>
                         <td> {{ items.prioridad }}</td>
@@ -61,6 +63,7 @@
                         <td class="text-center">
                             <a class="btn btn-outline-success" href="{{  path('editTicket', {id: items.id}) }}" role="button">Edit</a>&nbsp;
                             <a class="btn btn-danger" href="{{  path('delTicket', {id: items.id}) }}" role="button">Del</a>
+                            <a class="btn btn-warning" href="{{  path('notasIndex') }}" role="button">Notas</a>
                         </td>
                     </tr>
 

@@ -11,13 +11,18 @@
         <input type="hidden" id="id" value="{{ ticket.id }}">
 
         <div class="form-group">
+            <label for="titulo">Titulo</label>
+            <input type="text" class="form-control" id="titulo" value="{{ ticket.titulo }}">
+        </div>
+
+        <div class="form-group">
             <label for="descripcion">Descripcion</label>
             <input type="text"  class="form-control" id="descripcion" value="{{ ticket.descripcionProblema }}">
         </div>
 
         <div class="form-group">
-            <label for="categoria">Categoria</label>
-            <input type="text" class="form-control" id="categoria" value="{{ ticket.categoria }}">
+            <label for="categoriaID">Categoria</label>
+            <input type="text" class="form-control" id="categoriaID" value="{{ ticket.categoriaID }}">
         </div>
 
         <div class="form-group">
@@ -55,12 +60,13 @@
      <script>
 
          function  updTicket(ticket) {
-            // alert(JSON.stringify(ticket));
+
+             alert(JSON.stringify(ticket));
 
              $.ajax({
                  type: "PUT",
                  data: JSON.stringify(ticket),
-                 url: "http://systicket/app_dev.php/ticket/"+ticket.id+"/",
+                 url: Routing.generate('updTicket', {id: ticket.id}),
                  error: function() {
 
                  },
@@ -73,22 +79,26 @@
          }
 
          $(document).ready(function () {
+             alert('ready');
 
-             $('#updTicket').click(function () {
+             $('#udpTicket').click(function () {
+                    alert('click');
 
+                 var id = $('#id').val();
+                 var titulo = $('#titulo').val();
                  var descripcion = $('#descripcion').val();
-                 var categoria = $('#categoria').val();
+                 var categoriaID = $('#categoriaID').val();
                  var estado = $('#estado').val();
                  var prioridad = $('#prioridad').val();
                  var solicitante = $('#solicitante').val();
                  var usuarioAsig = $('#usuarioAsig').val();
 
-                 updTicket({ descripcionProblema : descripcion, categoria: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: solicitante, usuarioAsignadoID: usuarioAsig });
+                 updTicket({ id: id, descripcionProblema : descripcion, categoriaID: categoriaID, estado: estado, prioridad: prioridad, usuarioSolicitanteID: solicitante, usuarioAsignadoID: usuarioAsig, titulo: titulo });
 
              });
 
-
          });
+     </script>
 
    
 {% endblock %}

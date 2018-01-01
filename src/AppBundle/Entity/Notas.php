@@ -38,7 +38,7 @@ class Notas
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaCreado", type="datetime")
+     * @ORM\Column(name="FechaCreado", type="string", length=100)
      */
     private $fechaCreado;
 

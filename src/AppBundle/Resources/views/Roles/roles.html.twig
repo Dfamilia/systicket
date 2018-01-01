@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Roles {% endblock %}
+
+{% block body %}
+
+    <div class="row">
+
+        <div class="col-lg-3 offset-3">
+            <a class="btn btn-success " href="{{ path('newRol') }}" role="button"><b>Nuevo Rol</b></a>
+        </div>
+
+        <div class="col-lg-6">
+            <h1>Lista de Roles</h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6  offset-3">
+            <table class="table table-sm">
+                <thead class="thead-dark">
+
+                <th scope="col" class="text-center" >#</th>
+                <th scope="col" class="" >Rol</th>
+                <th scope="col" class="" >Descripcion</th>
+                <th scope="col" class="" >Departamento</th>
+                <th scope="col" class="text-center" >Acciones</th>
+
+                </thead>
+                <tbody>
+
+                {% set counter = 1 %}
+                {% for rol in rolesWaiter %}
+
+                    <tr>
+                        <th scope="row" class="text-center">{{ counter }}</th>
+                        <td >{{ rol.nombre }}</td>
+                        <td >{{ rol.descripcion }}</td>
+                        <td >{{ rol.departamentoProyecto }}</td>
+                        <td class="text-center">
+                            <a href="{{ path('editRol', {id: rol.id}) }}" class="btn btn-outline-success" role="button">Edit</a>
+                            <a href="{{ path('delRoles', {id : rol.id}) }}" class="btn btn-danger" role="button">Del</a>
+                            {#<button class="btn btn-danger delRol" id="{{ rol.id }}" value=""><spa>Del</spa></button>#}
+                        </td>
+                    </tr>
+                    {% set counter = counter + 1  %}
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{# SCRIPT PARA MANEJAR DEL CON AJAX
+{% block javascripts %}#}
+    {#{{ parent() }}#}
+
+    {#<script>#}
+
+        {#function delRol(rol){#}
+
+        {#}#}
+
+        {#$(document).ready(function () {#}
+
+            {#$('button.delRol').click(function () {#}
+
+                {#console.log($(this).data());#}
+
+            {#});#}
+
+        {#});#}
+
+    {#</script>#}
+
+
+{#{% endblock %}#}
+
+
+
+{#plantilla para los index#}
+
+{#{% extends 'base.html.twig' %}#}
+
+{#{% block title %} Roles {% endblock %}#}
+
+{#{% block body %}#}
+
+    {#<div class="row">#}
+
+        {#<div class="col-lg-3 offset-3">#}
+            {#<a class="btn btn-success " href="" role="button"><b>Crear Ticket</b></a>#}
+        {#</div>#}
+
+        {#<div class="col-lg-6">#}
+            {#<h1>Lista de Roles</h1>#}
+        {#</div>#}
+
+    {#</div>#}
+
+    {#<div class="row">#}
+        {#<div class="col-lg-6  offset-3">#}
+            {#<table class="table table-sm">#}
+                {#<thead class="thead-dark">#}
+
+                {#<th scope="col" class="text-center" >#</th>#}
+                {#<th scope="col" class="" >Rol</th>#}
+                {#<th scope="col" class="text-center" >Acciones</th>#}
+
+                {#</thead>#}
+                {#<tbody>#}
+
+                {#{% set counter = 1 %}#}
+                {#{% for %}#}
+
+                    {#<tr>#}
+                        {#<th scope="row" class="text-center">{{ counter }}</th>#}
+                        {#<td ></td>#}
+                        {#<td class="text-center">#}
+                            {#<a href="" class="btn btn-outline-success" role="button">Edit</a>#}
+                            {#<a href="" class="btn btn-danger" role="button">Del</a>#}
+                        {#</td>#}
+                    {#</tr>#}
+                    {#{% set counter = counter + 1  %}#}
+                {#{% endfor %}#}
+
+                {#</tbody>#}
+            {#</table>#}
+
+        {#</div>#}
+    {#</div>#}
+
+{#{% endblock %}#}

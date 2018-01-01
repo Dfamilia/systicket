@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Crear Rol{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-3">
+                <h1> Crear Rol </h1>
+
+                <form>
+                    <div class="form-group">
+                        <label for="nombre">Rol</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="---">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departamentoProyecto">Departamento</label>
+                        <input type="text" class="form-control" id="departamentoProyecto" placeholder="---">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripcion</label>
+                        <input type="text" class="form-control" id="descripcion" placeholder="---">
+                    </div>
+
+
+                    <button class="btn btn-success" id="addRol"><span>Guardar</span></button>
+                    <a href="{{ path('rolesIndex') }}" class="btn btn-danger"><span>Cancelar</span></a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function addRol(rol){
+
+           // alert(JSON.stringify(rol));
+
+            $.ajax({
+
+                type:"POST",
+                data: JSON.stringify(rol),
+                url: Routing.generate('addRol'),
+                error: function () {
+
+                },
+                success: function (data) {
+                   // alert(data);
+
+                    window.location = Routing.generate('rolesIndex');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $('#addRol').click(function () {
+
+                var nombre = $('#nombre').val();
+                var departamentoProyecto = $('#departamentoProyecto').val();
+                var descripcion = $('#descripcion').val();
+
+
+                addRol({ nombre : nombre, departamentoProyecto : departamentoProyecto, descripcion : descripcion });
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

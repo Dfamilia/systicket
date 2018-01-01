@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,14 +11,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\TicketType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Form\Form;
+
 
 //----- Ruta General------//
 /**
  * @Route("/ticket")
  */
 
-class TicketController extends Controller
+class TicketController extends FOSRestController
 
 {
     //++++++++++++++++++++++++++++++++++++++++++//
@@ -97,8 +97,6 @@ class TicketController extends Controller
 
         //obtener datos json del objeto request //
         $data = json_decode($request->getContent(), true);
-        dump($data);
-
 
         //crear un objeto de la clase Entity:Usuario//
         $ticket = new Ticket();
@@ -108,8 +106,6 @@ class TicketController extends Controller
 
         //finaliza y envia datos despues del debugeo interno de symfony
         $form->submit($data);
-
-
 
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
@@ -132,7 +128,7 @@ class TicketController extends Controller
             {
                 $error[] = $error->getMessage();
             }
-            die;
+
         }
 
         $newTicket = json_decode($this->get('serializer')->serialize($ticket,'json'), true);
@@ -160,18 +156,17 @@ class TicketController extends Controller
 
         $form = $this->createForm(TicketType::class, $updticket);
 
+        $form->submit($data);
+
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
-        $date = $date->format("y-M-d H:m a");
+        $date = $date->format("Y-M-d H:m:s a");
 
 
         //inserta dato extra fuera de la validacion de symfony///
         $updticket->setFechaCreado($date);
         $updticket->setFechaStatus($date);
         $updticket->setFechaCierre($date);
-
-
-        $form->submit($data);
 
         if ($form->isValid()){
 
@@ -197,13 +192,12 @@ class TicketController extends Controller
      *     name="delTicket",
      *     requirements={"id"="\d+"},
      *     options={"expose"=true})
-     *  @param Request $request
      * @param Ticket $delticket
      * @return JsonResponse
      */
-    public function delAction(Request $request, Ticket $delticket){
+    public function delAction(Ticket $delticket){
 
-        $data = json_encode($this->get('serializer')->serialize($delticket, 'json'), true);
+       // $data = json_encode($this->get('serializer')->serialize($delticket, 'json'), true);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($delticket);

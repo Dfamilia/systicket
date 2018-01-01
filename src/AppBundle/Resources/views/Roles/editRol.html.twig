@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar Rol{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-3">
+                <h1> Editar Rol </h1>
+
+                <form>
+                    <input type="hidden" id="id" value="{{ editRol.id }}">
+
+                    <div class="form-group">
+                        <label for="nombre">Rol</label>
+                        <input type="text" class="form-control" id="nombre" value="{{ editRol.nombre }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departamentoProyecto">Departamento</label>
+                        <input type="text" class="form-control" id="departamentoProyecto" value="{{ editRol.departamentoProyecto }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripcion</label>
+                        <input type="text" class="form-control" id="descripcion" value="{{ editRol.descripcion }}">
+                    </div>
+
+
+                    <button class="btn btn-success" id="updRol"><span>Guardar</span></button>
+                    <a href="{{ path('rolesIndex') }}" class="btn btn-danger"><span>Cancelar</span></a>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function updRol(rol){
+
+            // alert(JSON.stringify(rol));
+
+            $.ajax({
+
+                type:"PUT",
+                data: JSON.stringify(rol),
+                url: Routing.generate('updRol', {id: rol.id}),
+                error: function () {
+
+                },
+                success: function (data) {
+                    // alert(data);
+
+                    window.location = Routing.generate('rolesIndex');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+
+            $('#updRol').click(function () {
+
+                var id = $('#id').val();
+                var nombre = $('#nombre').val();
+                var departamentoProyecto = $('#departamentoProyecto').val();
+                var descripcion = $('#descripcion').val();
+
+
+                updRol({ id: id, nombre : nombre, departamentoProyecto : departamentoProyecto, descripcion : descripcion });
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

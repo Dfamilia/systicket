@@ -13,7 +13,7 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fechaCreado')->add('fechaStatus')->add('fechaCierre')->add('descripcionProblema')->add('categoria')->add('estado')->add('prioridad')->add('usuarioSolicitanteID')->add('usuarioAsignadoID');
+        $builder->add('fechaCreado')->add('fechaStatus')->add('fechaCierre')->add('descripcionProblema')->add('categoriaID')->add('estado')->add('prioridad')->add('usuarioSolicitanteID')->add('usuarioAsignadoID')->add('titulo');
     }
     
     /**

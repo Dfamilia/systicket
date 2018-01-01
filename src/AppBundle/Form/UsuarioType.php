@@ -24,11 +24,7 @@ class UsuarioType extends AbstractType
         ->add('userPass')
         ->add('tipoUser')
         ->add('rolID')
-        ->add('estado')
-        ->add('Guardar', SubmitType::class, array(
-            'attr'=>array('class'=>'btn btn-success save') ))
-        ->add('Borrar', ResetType::class, array(
-            'attr'=>array('class'=>'btn btn-danger')));
+        ->add('estado');
     }
     
     /**

@@ -3,7 +3,7 @@
 namespace AppBundle\Controller;
 
 
-use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\JsRoutingBundle\Command\DumpCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,13 +11,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Usuario;
 use AppBundle\Form\UsuarioType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\FOSRestController;
 
     //----- Ruta General------//
     /**
      * @Route("/usuario")
      */
 
-class UsuarioController extends Controller
+class UsuarioController extends FOSRestController
 
 {
     //++++++++++++++++++++++++++++++++++++++++++//
@@ -25,7 +26,7 @@ class UsuarioController extends Controller
     //++++++++++++++++++++++++++++++++++++++++++//
 
 
-    //------Ruta del index del template usuario-----------//
+    //------index usuario view -----------//
     /**
      * @Route("/", name="usuario", options={"expose" = true})
      * @Method("GET")
@@ -34,7 +35,6 @@ class UsuarioController extends Controller
     public function indexAction()
     {
         // Array de arreglos de datos usuario["id"], rol["nombre"]
-        $usuarioRol;
 
         $datosUsuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
 
@@ -44,24 +44,36 @@ class UsuarioController extends Controller
         $usuarioList = $datosUsuarioBD->findAll();
 
 
-        foreach ($usuarioList as $usuario){
+        if (!empty($usuarioList)) {
 
-            $id = $usuario->getRolID();
-
-            $datosRol = $datosRolesBD->find($id);
-
-            $nombreRol = $datosRol->getNombre();
+            foreach ($usuarioList as $usuario) {
 
 
-            $usuarioRol[] = ["id"=>"$id", "nombre"=>"$nombreRol"];
+                $id = $usuario->getRolID();
 
+                $datosRol = $datosRolesBD->find($id);
+
+
+                if (!empty($datosRol)) {
+
+                    $nombreRol = $datosRol->getNombre();
+
+
+                    $usuarioRol[] = ["id" => "$id", "nombre" => "$nombreRol"];
+
+                }else{
+                       $usuarioRol[] = ["id" => 0, "nombre" => "none"];
+                }
+
+
+            }
         }
 
 
         return $this->render('AppBundle:Usuario:usuario.html.twig',array("usuarioList"=>$usuarioList, "usuarioRol"=>$usuarioRol));
     }
 
-    //-------------------------------------------------------------------------------------------------------------
+    //------------------- nuevo usuario view ----------------------//
 
     /**
      * @Route("/new", name="nuevoUsuario", options={"expose" = true})
@@ -80,7 +92,7 @@ class UsuarioController extends Controller
     }
 
 
-    //-------------------------------------------------------------------------------------------------------------
+    //-------------------- Editar View -------------------------//
 
     /**
      * @Route("/{id}",
@@ -96,7 +108,26 @@ class UsuarioController extends Controller
     {
         $data = json_decode($this->get('serializer')->serialize($usuario, 'json'), true);
 
-        return $this->render('AppBundle:Usuario:editusuario.html.twig', array("usuario"=>$data));
+        $rolDataBD = $this->getDoctrine()->getRepository('AppBundle:Roles');
+
+        $rolOptions = $rolDataBD->findAll();
+
+        //script para el nombre del rol default del view editusuario
+
+        $roloptionID = $rolDataBD->find($data["rolID"]);
+
+        if (!empty($roloptionID))
+        {
+            $rolid = $roloptionID->getId();
+            $rolnombre = $roloptionID->getNombre();
+            $rolDefault = ["id"=>$rolid,"nombre"=>$rolnombre];
+        }else{
+            $rolDefault = ["id"=>0,"nombre"=>'none'];
+
+        }
+
+
+        return $this->render('AppBundle:Usuario:editusuario.html.twig', array("usuario"=>$data,"rolOptions"=>$rolOptions,"rolDefault"=>$rolDefault));
     }
 
 
@@ -107,7 +138,7 @@ class UsuarioController extends Controller
 
 
 
-    //--------- Guardar datos del nuevo usuario --------------//
+    //--------- Guardar datos --------------//
     /**
      * @Route("/new/", name="createUsuario", options={"expose" = true})
      * @Method("POST")
@@ -132,7 +163,7 @@ class UsuarioController extends Controller
 
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
-        $date = $date->format("y-M-d H:m a");
+        $date = $date->format("M/d/Y H:m a");
 
 
 
@@ -161,13 +192,10 @@ class UsuarioController extends Controller
     }
 
 
-    //----------- Actualizar datos el Usuario----------------------//-
+    //----------- Actualizar datos----------------------//
 
     /**
-     * @Route("/{id}/",
-     *     name="updUsuario",
-     *     requirements={"id"="\d+"},
-     *     options={"expose"=true})
+     * @Route("/{id}/", name="updUsuario", requirements={"id"="\d+"}, options={"expose"=true})
      * @Method("PUT")
      * @param Request $request
      * @param Usuario $updusuario
@@ -181,7 +209,7 @@ class UsuarioController extends Controller
 
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
-        $date = $date->format("y-M-d H:m a");
+        $date = $date->format("M/d/Y H:m a");
 
 
         //inserta dato extra fuera de la validacion de symfony///
@@ -209,17 +237,13 @@ class UsuarioController extends Controller
     //----------- Borrar Usuario -----------------//
 
     /**
-     * @Route("/{id}//",
-     *     name="delUsuario",
-     *     requirements={"id"="\d+"},
-     *     options={"expose"=true})
-     *  @param Request $request
+     * @Route("/{id}/", name="delUsuario", requirements={"id"="\d+"}, options={"expose"=true})
      * @param Usuario $delusario
      * @return JsonResponse
      */
-    public function delAction(Request $request, Usuario $delusario){
+    public function delAction(Usuario $delusario){
 
-        $data = json_encode($this->get('serializer')->serialize($delusario, 'json'), true);
+       // $data = json_encode($request->getContent(), true);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($delusario);

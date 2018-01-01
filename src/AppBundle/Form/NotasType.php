@@ -22,7 +22,9 @@ class NotasType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Notas'
+            'data_class' => 'AppBundle\Entity\Notas',
+            'csfr_protection'=>false,
+            'allows_extra_fields'=>true
         ));
     }
 
