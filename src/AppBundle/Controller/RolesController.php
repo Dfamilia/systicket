@@ -8,16 +8,16 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Form;
 
 
 /**
  * @Route("/roles")
  */
 
-class RolesController extends FOSRestController
+class RolesController extends Controller
 {
 
     //++++++++++++++++++++++++++++++++++++++++++//
@@ -26,7 +26,7 @@ class RolesController extends FOSRestController
 
     //================ index ==================//
     /**
-     * @Route("", name="rolesIndex", options={"expose"=true})
+     * @Route("/", name="indexRoles", options={"expose"=true})
      * @Method("GET")
      */
     public function indexAction()
@@ -35,34 +35,34 @@ class RolesController extends FOSRestController
         $RolesBD = $this->getDoctrine()->getRepository('AppBundle:Roles');
         $rolesWaiter = $RolesBD->findAll();
 
-        return $this->render('AppBundle:Roles:roles.html.twig', array("rolesWaiter"=>$rolesWaiter));
+        return $this->render('AppBundle:Roles:indexRoles.html.twig', array("rolesWaiter"=>$rolesWaiter));
     }
 
 
     //================== nuevo =================//
 
     /**
-     * @Route("/new", name="newRol", options={"expose"=true})
+     * @Route("/new", name="newRoles", options={"expose"=true})
      * @Method("GET")
      */
     public function newAction()
     {
-        return $this->render('AppBundle:Roles:newRol.html.twig');
+        return $this->render('AppBundle:Roles:newRoles.html.twig');
     }
 
     //================= editar =================//
 
     /**
-     * @Route("/{id}", name="editRol", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Route("/{id}", name="editRoles", requirements={"id"="\d+"}, options={"expose"=true})
      * @Method("GET")
-     * @param Request $request
      * @param Roles $rol
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Roles $rol)
+    public function editAction(Roles $rol)
     {
         $data = json_decode($this->get('serializer')->serialize($rol, 'json'),true);
 
-        return $this->render('AppBundle:Roles:editRol.html.twig',array('editRol'=>$data));
+        return $this->render('AppBundle:Roles:editRoles.html.twig',array('editRol'=>$data));
 
     }
 
@@ -72,47 +72,44 @@ class RolesController extends FOSRestController
     /////////////////--APIs--/////////////////////
     //++++++++++++++++++++++++++++++++++++++++++//
 
-    //================= Add(guardar) ================//
+    //================= Add ================//
 
     /**
-     * @Route("/new/", name="addRol", options={"expose"=true})
+     * @Route("/new/", name="addRoles", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @return JsonResponse
      */
     public function addAction(Request $request)
     {
-        $food = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
-        $newOrder = new Roles();
+        $newRol = new Roles();
 
-        $orderForm = $this->createForm(RolesType::class, $newOrder);
+        $orderForm = $this->createForm(RolesType::Class, $newRol);
 
-        $orderForm->submit($food);
-
+        $orderForm->submit($data);
 
         if ($orderForm->isValid()){
 
-            $waiter = $this->getDoctrine()->getManager();
-
-            $waiter->persist($newOrder);
-            $waiter->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newRol);
+            $em->flush();
 
         }else{
-            //dump('invalid');
+            dump('invalid');
         }
 
-        $newRole = json_decode($this->get('serializer')->serialize($newOrder, 'json'), true);
+        $newRole = json_decode($this->get('serializer')->serialize($newRol, 'json'), true);
 
         return new JsonResponse($newRole);
-       // return $this->redirectToRoute('rolesIndex');
 
     }
 
     //================= Upd(actualizar) =============//
 
     /**
-     * @Route("/{id}/", name="updRol", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Route("/{id}/", name="updRoles", requirements={"id"="\d+"}, options={"expose"=true})
      * @Method("PUT")
      * @param Request $request
      * @param Roles $rol
@@ -142,9 +139,10 @@ class RolesController extends FOSRestController
 
     //================= Del(borrar) =================//
     /**
-     * @Route("/{id}/", name="delRoles", requirements={"id"="\d+"},options={"expose"=true})
+     * @Route("/{id}/", name="delRoles", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Method("DELETE")
      * @param Roles $rol
-     * @Method("GET")
+     * @return JsonResponse
      */
     public function delAction(Roles $rol)
     {
@@ -152,6 +150,8 @@ class RolesController extends FOSRestController
        $rolWaiter->remove($rol);
        $rolWaiter->flush();
 
-       return $this->redirectToRoute('rolesIndex');
+       $delete = json_decode($this->get('serializer')->serialize($rol,'json'),true);
+
+       return new JsonResponse($delete);
     }
 }

@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Ticket;
@@ -26,53 +25,145 @@ class TicketController extends FOSRestController
     //++++++++++++++++++++++++++++++++++++++++++//
 
 
-    //------Ruta del index del Ticket-----------//
+    // ============== Ticket ================== //
     /**
-     * @Route("/", name="ticket", options={"expose" = true})
+     * @Route("", name="indexTicket", options={"expose" = true})
      * @Method("GET")
-     * @return JsonResponse
      */
     public function indexAction()
     {
         // replace this example code with whatever you need
+        $cliente = array();
+        $empleado = array();
 
         $datosticketBD = $this->getDoctrine()->getRepository('AppBundle:Ticket');
+        $usuariosBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
 
         $ticketList = $datosticketBD->findAll();
-        return $this->render('AppBundle:Ticket:ticket.html.twig',array("ticketList"=>$ticketList));
+
+        if (!empty($ticketList)){
+
+            foreach ($ticketList as $item){
+
+                if (!empty($item->getUsuarioSolicitanteID())){
+
+                    $dataObj = $usuariosBD->find($item->getUsuarioSolicitanteID());
+
+                    if( !empty($dataObj) )
+                    {
+                        $cliente[]=["id"=>$dataObj->getid(), "username"=>$dataObj->getusername()];
+
+                    }
+
+                }
+                 else
+                 {
+                    $cliente[]=["id"=>0, "username"=>"none"];
+                 }
+
+                if (!empty($item->getUsuarioAsignadoID())){
+
+                    $dataObj2 = $usuariosBD->find($item->getUsuarioAsignadoID());
+
+                    if( !empty($dataObj2) )
+                    {
+                        $empleado[]=["id"=>$dataObj2->getid(), "username"=>$dataObj2->getusername()];
+
+                    }
+
+                }
+                else
+                {
+                    $empleado[]=["id"=>0, "username"=>"none"];
+                }
+            }
+
+        }
+        return $this->render('AppBundle:Ticket:indexTicket.html.twig',array("ticketList"=>$ticketList, "usuarioCliente"=>$cliente, "usuarioAsignado"=>$empleado ));
     }
 
     //-------Ruta del form nuevo ticket-------//
 
     /**
-     * @Route("/new", name="nuevoTicket", options={"expose" = true})
+     * @Route("/new", name="newTicket", options={"expose" = true})
      * @Method("GET")
-     * @return JsonResponse
      */
     public function newAction()
     {
+        $cliente = array();
+        $asignado = array();
 
-        return $this->render('AppBundle:Ticket:nuevoticket.html.twig');
+        $usuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
+        $usuarioW = $usuarioBD->findAll();
+
+        if (!empty($usuarioW)) {
+
+            foreach ($usuarioW as $item) {
+
+                if (($item->getTipoUser()) == "Cliente")
+                {
+                    $cliente[] = ["id" => $item->getid(), "username" => $item->getusername()];
+
+                }elseif (($item->getTipoUser()) == "Soporte")
+                {
+
+                    $asignado[]=["id"=>$item->getid(), "username"=>$item->getusername()];
+
+                }
+
+            }
+        }else
+        {
+            $cliente[]=["id"=>0, "username"=>"none"];
+            $asignado[]=["id"=>0, "username"=>"none"];
+        }
+
+        return $this->render('AppBundle:Ticket:newTicket.html.twig', array('uCliente'=> $cliente, "uAsignado"=>$asignado));
     }
 
 
     //--------Ruta de form editar ticket--------//
 
     /**
-     * @Route("/{id}",
-     *     name="editTicket",
-     *     options={"expose" = true},
-     *     requirements={"id"="\d+"})
+     * @Route("/{id}", name="editTicket", options={"expose" = true}, requirements={"id"="\d+"})
      * @Method("GET")
-     * @param Request $request
      * @param Ticket $ticket
-     * @return JsonResponse
      */
-    public function editAction(Request $request, Ticket $ticket)
+    public function editAction(Ticket $ticket, $id)
     {
         $data = json_decode($this->get('serializer')->serialize($ticket, 'json'), true);
 
-        return $this->render('AppBundle:Ticket:editticket.html.twig', array("ticket"=>$data));
+        $cliente = array();
+        $asignado = array();
+
+        $usuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
+        $usuarioW = $usuarioBD->findAll();
+
+
+        if (!empty($usuarioW)) {
+
+            foreach ($usuarioW as $item) {
+
+                if (($item->getTipoUser()) == "Cliente")
+                {
+                    $cliente[] = ["id" => $item->getid(), "username" => $item->getusername()];
+
+                }elseif (($item->getTipoUser()) == "Soporte")
+                {
+
+                    $asignado[]=["id"=>$item->getid(), "username"=>$item->getusername()];
+
+                }
+
+            }
+        }else
+        {
+            $cliente[]=["id"=>0, "username"=>"none"];
+            $asignado[]=["id"=>0, "username"=>"none"];
+        }
+
+
+        return $this->render('AppBundle:Ticket:editTicket.html.twig', array("ticket"=>$data,'uCliente'=> $cliente, "uAsignado"=>$asignado));
     }
 
 
@@ -81,14 +172,11 @@ class TicketController extends FOSRestController
     /////////////////--APIs--/////////////////////
     //++++++++++++++++++++++++++++++++++++++++++//
 
-    /**
-     * @todo al crear el ticket este no se guarda
-     */
 
 
     //--------- Guardar datos del nuevo ticket --------------//
     /**
-     * @Route("/new/", name="createTicket", options={"expose" = true})
+     * @Route("/new/", name="addTicket", options={"expose" = true})
      * @param Request $request
      * @Method("POST")
      * @return JsonResponse
@@ -141,10 +229,7 @@ class TicketController extends FOSRestController
     //----------- Actualizar datos el ticket----------------------//-
 
     /**
-     * @Route("/{id}/",
-     *     name="updTicket",
-     *     requirements={"id"="\d+"},
-     *     options={"expose"=true})
+     * @Route("/{id}/", name="updTicket", requirements={"id"="\d+"}, options={"expose"=true})
      * @Method("PUT")
      * @param Request $request
      * @param Ticket $updticket
@@ -161,7 +246,6 @@ class TicketController extends FOSRestController
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
         $date = $date->format("Y-M-d H:m:s a");
-
 
         //inserta dato extra fuera de la validacion de symfony///
         $updticket->setFechaCreado($date);
@@ -185,25 +269,35 @@ class TicketController extends FOSRestController
         return new JsonResponse($updticket);
     }
 
+
     //----------- Borrar Ticket -----------------//
 
     /**
-     * @Route("/{id}//",
-     *     name="delTicket",
-     *     requirements={"id"="\d+"},
-     *     options={"expose"=true})
+     * @Route("/{id}//", name="delTicket", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Method("DELETE")
      * @param Ticket $delticket
      * @return JsonResponse
      */
-    public function delAction(Ticket $delticket){
+    public function delAction(Ticket $delticket, $id){
 
        // $data = json_encode($this->get('serializer')->serialize($delticket, 'json'), true);
+        $notasTicket = $this->getDoctrine()->getRepository('AppBundle:Notas')->findBy(array("ticketID"=>$id));
 
         $em = $this->getDoctrine()->getManager();
+
+        //esto elimina todas las notas que existen del ticket
+        foreach ($notasTicket as $notas){
+            $em->remove($notas);
+        }
+
+        //esto elimina el ticket
         $em->remove($delticket);
+
         $em->flush();
 
-        return $this->redirectToRoute('ticket');
+        $Ticket = json_decode($this->get('serializer')->serialize($delticket, 'json'), true);
+
+        return new JsonResponse($Ticket);
     }
 
 

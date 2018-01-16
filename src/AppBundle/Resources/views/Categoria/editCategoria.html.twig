@@ -15,7 +15,7 @@
                     </div>
 
                     <button class="btn btn-success" id="updCategoria"><span>Guardar</span></button>
-                    <a href="{{ path('categoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
+                    <a href="{{ path('indexCategoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
 
                 </form>
 
@@ -45,7 +45,7 @@
                 },
                 success: function (data) {
 
-                    window.location = Routing.generate('categoria');
+                    window.location = Routing.generate('indexCategoria');
                 }
             });
         }

@@ -71,9 +71,9 @@ class Usuario
     private $estado;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="FechaRegistro", type="string", length=20)
+     * @ORM\Column(name="FechaRegistro", type="string", length=100)
      */
     private $fechaRegistro;
 
@@ -259,7 +259,7 @@ class Usuario
     /**
      * Set fechaRegistro
      *
-     * @param \DateTime $fechaRegistro
+     * @param string $fechaRegistro
      *
      * @return Usuario
      */
@@ -273,7 +273,7 @@ class Usuario
     /**
      * Get fechaRegistro
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaRegistro()
     {

@@ -14,7 +14,7 @@
                     </div>
 
                     <button class="btn btn-success" id="addCategoria"><span>Guardar</span></button>
-                    <a href="{{ path('categoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
+                    <a href="{{ path('indexCategoria') }}" class="btn btn-danger"><span>Cancelar</span></a>
 
                 </form>
 
@@ -32,21 +32,25 @@
 
         function addCategoria(categoria){
 
-            //alert(Routing.generate('postCategoria'));
+            alert(JSON.stringify(categoria));
 
 
             $.ajax({
 
                 type:"POST",
                 data: JSON.stringify(categoria),
-                url: Routing.generate('postCategoria'),
-                error: function () {
+                url: Routing.generate('addCategoria'),
+                success: function (data1) {
+
+ //                   alert(JSON.stringify(data1));
+                    window.location = Routing.generate('indexCategoria');
 
                 },
-                success: function (data) {
-
-                    window.location = Routing.generate('categoria');
+                error: function (data) {
+                    console.log(JSON.stringify(data));
                 }
+
+
             });
         }
 

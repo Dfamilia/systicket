@@ -7,7 +7,7 @@
     <div class="row">
 
         <div class="col-lg-3 offset-3">
-            <a class="btn btn-success " href="{{ path('newRol') }}" role="button"><b>Nuevo Rol</b></a>
+            <a class="btn btn-success " href="{{ path('newRoles') }}" role="button"><b>Nuevo Rol</b></a>
         </div>
 
         <div class="col-lg-6">
@@ -39,9 +39,9 @@
                         <td >{{ rol.descripcion }}</td>
                         <td >{{ rol.departamentoProyecto }}</td>
                         <td class="text-center">
-                            <a href="{{ path('editRol', {id: rol.id}) }}" class="btn btn-outline-success" role="button">Edit</a>
-                            <a href="{{ path('delRoles', {id : rol.id}) }}" class="btn btn-danger" role="button">Del</a>
-                            {#<button class="btn btn-danger delRol" id="{{ rol.id }}" value=""><spa>Del</spa></button>#}
+                            <a href="{{ path('editRoles', {id: rol.id}) }}" class="btn btn-outline-success" role="button">Edit</a>
+                            {#<a href="{{ path('delRoles', {id : rol.id}) }}" class="btn btn-danger" role="button">Del</a>#}
+                            <button class="btn btn-danger" id="delRoles" value="{{ rol.id }}"><spa>Del</spa></button>
                         </td>
                     </tr>
                     {% set counter = counter + 1  %}
@@ -52,6 +52,38 @@
 
         </div>
     </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function delRoles(id){
+
+            $.ajax({
+                type:"DELETE",
+                url: Routing.generate('delRoles',{id:id}),
+                error:function (data) {
+
+                },
+                success:function (data) {
+
+                    location.reload();
+                }
+            })
+        }
+
+        $(document).ready(function () {
+
+            $(document).on("click","#delRoles",function () {
+
+                delRoles($(this).attr('value'));
+
+            });
+        });
+    </script>
 
 {% endblock %}
 

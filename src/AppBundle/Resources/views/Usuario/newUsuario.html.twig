@@ -31,7 +31,7 @@
             <label for="usuarioTipo">Usuario Tipo</label>
             <select id="usuarioTipo" class="form-control">
                 <option value="">---</option>
-                <option value="Solicitante">Cliente</option>
+                <option value="Cliente">Cliente</option>
                 <option value="Soporte">Soporte</option>
             </select>
         </div>
@@ -62,7 +62,7 @@
 
 
         <button type="button" class="btn btn-success" id="addUsuario">Guardar</button>
-        <a class="btn btn-danger" href="{{ path('usuario') }}">Cancelar</a>
+        <a class="btn btn-danger" href="{{ path('indexUsuario') }}">Cancelar</a>
 
     </form>
 
@@ -80,12 +80,12 @@
             $.ajax({
                 type: "POST",
                 data: JSON.stringify(usuario),
-                url: Routing.generate('createUsuario'),
+                url: Routing.generate('addUsuario'),
                 error: function() {
 
                 },
                 success: function (data) {
-                    window.location = Routing.generate('usuario');
+                    window.location = Routing.generate('indexUsuario');
                 }
             });
 

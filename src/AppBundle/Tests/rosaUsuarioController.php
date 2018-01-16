@@ -26,7 +26,7 @@ class UsuarioController extends Controller
 	 
 	  public function indexAction(Request $request)
     {
-	    return $this->render('AppBundle:Usuario:usuario.html.twig');
+	    return $this->render('AppBundle:Usuario:indexUsuario.html.twig');
 		
 		$usuario = new Usuario();
 		$usuario->setNombres('');
@@ -56,7 +56,7 @@ class UsuarioController extends Controller
 
 		
         // replace this example code with whatever you need
-        return $this->render('AppBundle:Usuario:usuario.html.twig', array(
+        return $this->render('AppBundle:Usuario:indexUsuario.html.twig', array(
            // 'base_dir' => 'usuario'
 		   'form' => $form->createView()
         ));

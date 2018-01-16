@@ -39,7 +39,7 @@
                         <td >{{ item.nombre }}</td>
                         <td class="text-center">
                             <a href="{{ path('editCategoria', {id : item.id}) }}" class="btn btn-outline-success" role="button">Edit</a>
-                            <a href="{{ path('delCategoria', {id: item.id }) }}" class="btn btn-danger" role="button">Del</a>
+                            <button class="btn btn-danger" id="delCategoria" value="{{ item.id }}"><span>Del</span> </button>
                         </td>
                     </tr>
                         {% set counter = counter + 1  %}
@@ -53,3 +53,34 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        function delCategoria(id){
+
+            $.ajax({
+                type:"DELETE",
+                url: Routing.generate('delCategoria', {id: id}),
+                error: function (data) {
+
+                },
+                success: function (data) {
+                    location.reload();
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            $(document).on("click", "#delCategoria", function () {
+
+               delCategoria($(this).attr("value"));
+            });
+        });
+
+
+    </script>
+
+{% endblock %}

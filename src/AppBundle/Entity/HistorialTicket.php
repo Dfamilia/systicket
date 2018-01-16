@@ -36,9 +36,9 @@ class HistorialTicket
     private $usuarioID;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="FechaCreado", type="datetime")
+     * @ORM\Column(name="FechaCreado", type="string", length=100)
      */
     private $fechaCreado;
 
@@ -111,7 +111,7 @@ class HistorialTicket
     /**
      * Set fechaCreado
      *
-     * @param \DateTime $fechaCreado
+     * @param string $fechaCreado
      *
      * @return HistorialTicket
      */
@@ -125,7 +125,7 @@ class HistorialTicket
     /**
      * Get fechaCreado
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaCreado()
     {

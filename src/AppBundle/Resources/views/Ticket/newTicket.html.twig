@@ -33,17 +33,31 @@
         </div>
 
         <div class="form-group">
-            <label for="solicitante">Solicitante</label>
-            <input type="text" class="form-control" id="solicitante" placeholder="---">
+            <label for="usuarioSol">Solicitante</label>
+            <select id="usuarioSol" class="form-control">
+
+                <option value="0">---</option>
+                {% for cliente in uCliente %}
+                    <option value="{{ cliente["id"] }}">{{ cliente["username"] }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <div class="form-group">
-            <label for="usuarioAsig">idRol</label>
-            <input type="text" class="form-control" id="usuarioAsig" placeholder="---">
+            <label for="usuarioAsig">Asignado</label>
+            <select id="usuarioAsig" class="form-control">
+
+                <option value="0">---</option>
+                {% for asignado in uAsignado %}
+                    <option value="{{ asignado["id"] }}">{{ asignado["username"] }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <button type="button" class="btn btn-success" id="addTicket">Guardar</button>
-        <a class="btn btn-danger" href="{{ path('ticket') }}">Cancelar</a>
+        <a class="btn btn-danger" href="{{ path('indexTicket') }}">Cancelar</a>
 
     </form>
 
@@ -62,13 +76,13 @@
             $.ajax({
                 type: "POST",
                 data: JSON.stringify(ticket),
-                url: "http://systicket/app_dev.php/ticket/new/",
+                url: Routing.generate('addTicket'),
                 error: function() {
 
                 },
                 success: function (data) {
                     //(JSON.stringify(data));
-                    window.location = Routing.generate('ticket');
+                    window.location = Routing.generate('indexTicket');
                 }
             });
 
@@ -83,10 +97,10 @@
                 var categoria = $('#categoria').val();
                 var estado = $('#estado').val();
                 var prioridad = $('#prioridad').val();
-                var solicitante = $('#solicitante').val();
-                var usuarioAsig = $('#usuarioAsig').val();
+                var usuarioSol = $('#usuarioSol option:selected').val();
+                var usuarioAsig = $('#usuarioAsig option:selected').val();
 
-                addTicket({ descripcionProblema : descripcion, categoriaID: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: solicitante, usuarioAsignadoID: usuarioAsig, titulo: titulo });
+                addTicket({ descripcionProblema : descripcion, categoriad: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: usuarioSol, usuarioAsignadoID: usuarioAsig, titulo: titulo });
 
             });
 

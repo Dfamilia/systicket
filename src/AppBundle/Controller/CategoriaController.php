@@ -2,16 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\CategoriaTicketType;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\CategoriaTicket;
-
+use AppBundle\Form\CategoriaTicketType;
 /**
  * @Route("/categoria")
  */
@@ -22,29 +19,27 @@ use AppBundle\Entity\CategoriaTicket;
 
 class CategoriaController extends FOSRestController
 {
-    //------------- index ----------------//
+    //================ Index =============//
     /**
-     * @Route("", name="categoria", options={"expose" = true})
+     * @Route("/", name="indexCategoria", options={"expose" = true})
      * @Method("GET")
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
 
         $categoriaBD = $this->getDoctrine()->getRepository('AppBundle:CategoriaTicket');
         $dCategoria = $categoriaBD->findAll();
 
-        return $this->render('AppBundle:Categoria:categoria.html.twig', array("categoria"=>$dCategoria));
+        return $this->render('AppBundle:Categoria:indexCategoria.html.twig', array("categoria"=>$dCategoria));
 
     }//indexAction
 
 
-    //------------- nuevo ----------------//
+    //============== New ===================//
 
     /**
      * @Route("/new", name="newCategoria", options={"expose"=true})
      * @Method("GET")
-     * @return JsonResponse
      */
     public function newAction(){
 
@@ -53,15 +48,13 @@ class CategoriaController extends FOSRestController
     }//newAction
 
 
-    //-------------- editar -----------------//
+    //================ Edit ===================//
     /**
      * @Route("/{id}", name="editCategoria", requirements={"id"="\d+"}, options={"expose"=true})
      * @Method("GET")
-     * @param Request $request
      * @param CategoriaTicket $categoria
-     * @return JsonResponse
      */
-    public function editAction(Request $request, CategoriaTicket $categoria){
+    public function editAction(CategoriaTicket $categoria){
 
         $categoriaData = json_decode($this->get('serializer')->serialize($categoria, 'json'), true);
 
@@ -74,18 +67,18 @@ class CategoriaController extends FOSRestController
 /////////////////--APIs--////////////////////
 //++++++++++++++++++++++++++++++++++++++++++//
 
-    //--------------- Crear --------------//
+    //============= Add ===================//
     /**
-     * @Route("/new/", name="postCategoria", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Route("/new/", name="addCategoria", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @return JsonResponse
      */
-    public function postAction(Request $request){
+    public function addAction(Request $request){
 
         $data = json_decode($request->getContent(), true);
 
-        $categoria = new CategoriaTicket();
+        $categoria = new CategoriaTicket;
 
         $form = $this->createForm(CategoriaTicketType::class, $categoria);
 
@@ -106,13 +99,14 @@ class CategoriaController extends FOSRestController
             }
         }
 
-        $newCategoria = json_decode($this->get('serializer')->serialize($categoria, 'json'), true);
+        $newCategoria = json_decode($this->get('serializer')->serialize($categoria,'json'), true);
+        dump($newCategoria);
 
         return new JsonResponse($newCategoria);
 
-    }//postAction
+    }
 
-    //----------- Actualizar ----------------------//
+    //=============== Update ======================//
 
     /**
      * @Route("/{id}/", name="updCategoria", requirements={"id"="\d+"}, options={"expose"=true})
@@ -147,9 +141,10 @@ class CategoriaController extends FOSRestController
     }
 
 
-    //----------- Borrar -----------------//
+    //================ Delete ==================//
     /**
      * @Route("/{id}/", name="delCategoria", requirements={"id"="\d+"}, options={"expose"=true})
+     * @Method("DELETE")
      * @param CategoriaTicket $delCategoria
      * @return JsonResponse
      */
@@ -159,7 +154,8 @@ class CategoriaController extends FOSRestController
         $em->remove($delCategoria);
         $em->flush();
 
-        return $this->redirectToRoute('categoria');
+        $delcategoria = json_decode($this->get('serializer')->serialize($delCategoria, 'json'), true);
+        return new JsonResponse($delcategoria);
     }
 
 

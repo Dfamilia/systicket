@@ -36,7 +36,7 @@ class Notas
     private $usuarioID;
 
     /**
-     * @var \DateTime
+     * @var string
      *
      * @ORM\Column(name="FechaCreado", type="string", length=100)
      */
@@ -111,7 +111,7 @@ class Notas
     /**
      * Set fechaCreado
      *
-     * @param \DateTime $fechaCreado
+     * @param string $fechaCreado
      *
      * @return Notas
      */
@@ -125,7 +125,7 @@ class Notas
     /**
      * Get fechaCreado
      *
-     * @return \DateTime
+     * @return string
      */
     public function getFechaCreado()
     {

@@ -2,16 +2,14 @@
 
 namespace AppBundle\Controller;
 
-
-use FOS\JsRoutingBundle\Command\DumpCommand;
+use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Usuario;
 use AppBundle\Form\UsuarioType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use FOS\RestBundle\Controller\FOSRestController;
+
 
     //----- Ruta General------//
     /**
@@ -26,14 +24,15 @@ class UsuarioController extends FOSRestController
     //++++++++++++++++++++++++++++++++++++++++++//
 
 
-    //------index usuario view -----------//
+    // =============== Index ================== //
     /**
-     * @Route("/", name="usuario", options={"expose" = true})
+     * @Route("/", name="indexUsuario", options={"expose" = true})
      * @Method("GET")
-     * @return JsonResponse
      */
     public function indexAction()
     {
+        $usuarioRol = array();
+
         // Array de arreglos de datos usuario["id"], rol["nombre"]
 
         $datosUsuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
@@ -43,21 +42,17 @@ class UsuarioController extends FOSRestController
         //script que busca y crea un array concatenando usuario.id con rol.nombre
         $usuarioList = $datosUsuarioBD->findAll();
 
-
         if (!empty($usuarioList)) {
 
             foreach ($usuarioList as $usuario) {
-
 
                 $id = $usuario->getRolID();
 
                 $datosRol = $datosRolesBD->find($id);
 
-
                 if (!empty($datosRol)) {
 
                     $nombreRol = $datosRol->getNombre();
-
 
                     $usuarioRol[] = ["id" => "$id", "nombre" => "$nombreRol"];
 
@@ -69,16 +64,14 @@ class UsuarioController extends FOSRestController
             }
         }
 
-
-        return $this->render('AppBundle:Usuario:usuario.html.twig',array("usuarioList"=>$usuarioList, "usuarioRol"=>$usuarioRol));
+        return $this->render('AppBundle:Usuario:indexUsuario.html.twig',array("usuarioList"=>$usuarioList, "usuarioRol"=>$usuarioRol));
     }
 
-    //------------------- nuevo usuario view ----------------------//
+    // ================ Nuevo ================== //
 
     /**
-     * @Route("/new", name="nuevoUsuario", options={"expose" = true})
+     * @Route("/new", name="newUsuario", options={"expose" = true})
      * @Method("GET")
-     * @return JsonResponse
      */
     public function newAction()
     {
@@ -87,24 +80,18 @@ class UsuarioController extends FOSRestController
 
         $rolOptions = $rolDataBD->findAll();
 
-
-        return $this->render('AppBundle:Usuario:nuevousuario.html.twig',array("rolOptions"=>$rolOptions));
+        return $this->render('AppBundle:Usuario:newUsuario.html.twig',array("rolOptions"=>$rolOptions));
     }
 
 
-    //-------------------- Editar View -------------------------//
+    // =================== Edit ================= //
 
     /**
-     * @Route("/{id}",
-     *     name="editUsuario",
-     *     options={"expose" = true},
-     *     requirements={"id"="\d+"})
+     * @Route("/{id}", name="editUsuario", options={"expose" = true}, requirements={"id"="\d+"})
      * @Method("GET")
-     * @param Request $request
      * @param Usuario $usuario
-     * @return JsonResponse
      */
-    public function editAction(Request $request, Usuario $usuario)
+    public function editAction(Usuario $usuario)
     {
         $data = json_decode($this->get('serializer')->serialize($usuario, 'json'), true);
 
@@ -127,7 +114,7 @@ class UsuarioController extends FOSRestController
         }
 
 
-        return $this->render('AppBundle:Usuario:editusuario.html.twig', array("usuario"=>$data,"rolOptions"=>$rolOptions,"rolDefault"=>$rolDefault));
+        return $this->render('AppBundle:Usuario:editUsuario.html.twig', array("usuario"=>$data,"rolOptions"=>$rolOptions,"rolDefault"=>$rolDefault));
     }
 
 
@@ -138,15 +125,14 @@ class UsuarioController extends FOSRestController
 
 
 
-    //--------- Guardar datos --------------//
+    // ================= Add ================== //
     /**
-     * @Route("/new/", name="createUsuario", options={"expose" = true})
+     * @Route("/new/", name="addUsuario", options={"expose" = true})
      * @Method("POST")
      * @param Request $request
-     *
      * @return JsonResponse
      */
-    public function postAction(Request $request){
+    public function addAction(Request $request){
 
         //obtener datos json del objeto request //
         $data = json_decode($request->getContent(), true);
@@ -164,7 +150,6 @@ class UsuarioController extends FOSRestController
         //le cambio el formato al date time para que retorne un string y despues insertarlo
         $date = new \DateTime();
         $date = $date->format("M/d/Y H:m a");
-
 
 
         //inserta dato extra fuera de la validacion de symfony///
@@ -192,7 +177,7 @@ class UsuarioController extends FOSRestController
     }
 
 
-    //----------- Actualizar datos----------------------//
+    // ================== Update ================= //
 
     /**
      * @Route("/{id}/", name="updUsuario", requirements={"id"="\d+"}, options={"expose"=true})
@@ -234,22 +219,25 @@ class UsuarioController extends FOSRestController
         return new JsonResponse($updusuario);
     }
 
-    //----------- Borrar Usuario -----------------//
+    // =================== Delete ===================== //
 
     /**
      * @Route("/{id}/", name="delUsuario", requirements={"id"="\d+"}, options={"expose"=true})
-     * @param Usuario $delusario
+     * @Method("DELETE")
+     * @param Usuario $delusuario
      * @return JsonResponse
      */
-    public function delAction(Usuario $delusario){
+    public function delAction(Usuario $delusuario){
 
        // $data = json_encode($request->getContent(), true);
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($delusario);
+        $em->remove($delusuario);
         $em->flush();
 
-        return $this->redirectToRoute('usuario');
+        $delUsuario = json_decode($this->get('serializer')->serialize($delusuario, 'json'), true);
+
+        return new JsonResponse($delusuario);
     }
 
 

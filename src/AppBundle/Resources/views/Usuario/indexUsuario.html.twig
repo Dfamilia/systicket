@@ -9,7 +9,7 @@
     <div class="row">
 
         <div class="col-lg-9">
-            <a class="btn btn-success " href="{{  path('nuevoUsuario') }}" role="button"><b>Nuevo Usuario</b></a>
+            <a class="btn btn-success " href="{{  path('newUsuario') }}" role="button"><b>Nuevo Usuario</b></a>
         </div>
 
         <div class="col-lg-3">
@@ -63,10 +63,8 @@
                         <td class="text-center"> {{ items.fechaRegistro }}</td>
                         <td class="text-center">
 
-                            {# <a href="{{ Router('nombrerutainterna', {id: items.id}) }}"></a>  despues de instalar y conf FOSROUTIN #}
                             <a class="btn btn-outline-success" href="{{ path('editUsuario', {id: items.id}) }}" role="button">Edit</a>&nbsp;
-                            <a class="btn btn-danger" href="{{ path('delUsuario', {id: items.id}) }}" role="button">Del</a>
-                            {#<button type="button" class="btn btn-default" id="delbutton"><span>Borra</span></button>#}
+                            <button type="button" class="btn btn-danger" id="delUsuario" value="{{ items.id }}"><span>Del</span></button>
 
                         </td>
                     </tr>
@@ -87,4 +85,31 @@
 {% block javascripts %}
     {{ parent() }}
 
+    <script>
+
+        function delUsuario(id) {
+            $.ajax({
+
+                type: "DELETE",
+                url: Routing.generate('delUsuario', {id: id}),
+                error: function(data){
+
+                },
+                success: function(data){
+                 location.reload();
+                }
+
+            });
+        }
+
+        $(document).ready(function () {
+
+            //esto trabaja con el DOM del navegador para tomar los datos
+            $(document).on('click', '#delUsuario', function (){
+
+                delUsuario($(this).attr("value"));
+            });
+        });
+
+    </script>
 {% endblock %}

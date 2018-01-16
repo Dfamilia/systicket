@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ticket {% endblock %}
+
+{% block event_ticket %} active {% endblock %}
+
+{% block body %}
+
+
+    <div class="row">
+
+        <div class="col-lg-9">
+            <a class="btn btn-success " href="{{ path('newTicket') }}" role="button"><b>Nuevo Ticket</b></a>
+        </div>
+
+        <div class="col-lg-3">
+            <h1>Lista de Tickets</h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12"><br></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <table class="table table-bordered table-sm">
+
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Fecha Creado</th>
+                    <th scope="col" class="">Titulo</th>
+                    <th scope="col" class="">Descripcion</th>
+                    <th scope="col" class="">Categoria</th>
+                    <th scope="col" class="">Estado</th>
+                    <th scope="col" class="text-center">Fecha Estado</th>
+                    <th scope="col" class="">Prioridad</th>
+                    <th scope="col" class="">Solicitante</th>
+                    <th scope="col" class="">Asignado</th>
+                    <th scope="col" class="text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for items in ticketList %}
+
+                    {% set contCliente = 1 %}
+                    {% set contAsignado = 1 %}
+
+                    <tr>
+                        <th scope="row" class="text-center"> {{ items.id }} </th>
+                        <td class="text-center"> {{ items.fechaCreado }}</td>
+                        <td class=""> {{ items.titulo }}</td>
+                        <td> {{ items.descripcionProblema }}</td>
+                        <td> {{ items.categoria }}</td>
+                        <td> {{ items.estado }}</td>
+                        <td class="text-center"> {{ items.fechaStatus }}</td>
+                        <td> {{ items.prioridad }}</td>
+                        <td>
+                            {% for cliente in usuarioCliente if contCliente == 1 %}
+                                    {#{{ dump(cliente) }}#}
+                                {%  if items.usuarioSolicitanteID == cliente["id"] %}
+                                    {{  cliente["username"] }}
+                                    {% set contCliente = 0 %}
+                                {% endif %}
+
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for asignado in usuarioAsignado if contAsignado == 1 %}
+                                {#{{ dump(asignado) }}#}
+
+                                {% if items.usuarioAsignadoID == asignado["id"] %}
+                                    {{ asignado["username"] }}
+                                    {% set contAsignado = 0 %}
+                                {% endif %}
+
+                            {% endfor %}
+                        </td>
+
+
+                        <td class="text-center">
+                            <a class="btn btn-outline-success" href="{{  path('editTicket', {id: items.id}) }}" role="button">Edit</a>&nbsp;
+                            <button class="btn btn-danger" id="delTicket" value="{{ items.id }}"><span>Del</span></button>
+                            <a class="btn btn-warning" href="{{  path('indexNotas', {ticketId: items.id, uAsignadoId: items.usuarioAsignadoID }) }}" role="button">Notas</a>
+                        </td>
+                    </tr>
+
+                {%  endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        function delTicket(id) {
+
+             $.ajax({
+                 type:"DELETE",
+                 url:Routing.generate('delTicket', {id: id}),
+                 error : function (data) {
+                        alert('error');
+                 },
+                 success: function (data) {
+                    // alert(JSON.stringify(data));
+                     location.reload();
+                 }
+             });
+        }
+
+        $(document).ready(function () {
+
+            $(document).on("click", "#delTicket", function () {
+
+                delTicket($(this).val());
+            });
+
+        });
+
+    </script>
+
+{% endblock %}

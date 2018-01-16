@@ -5,29 +5,39 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 offset-3">
+            <div class="col-lg-8 offset-2">
                 <h1> Nueva Nota </h1>
 
                 <form>
 
-                    <div class="form-group ">
-                        <label for="id">ID</label>
-                        <input type="text" class="form-control col-lg-2" id="id" value="{{ ticketID }}" disabled="disabled">
+                    <div class="form-group form-inline col-lg-10">
+
+                        <input type="hidden" id="ticketId" value="{{ ticketId }}">
+                        <input type="hidden" id="uAsignadoId" value="{{ uAsignadoId }}">
+
+                        <label for="id">Ticket</label>&nbsp;&nbsp;
+                        <input type="text" class="form-control col-lg-4" value="{{ tituloTicket }}" disabled="disabled">
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <label for="usuarioID">Usuario</label>&nbsp;&nbsp;
+                        <input type="text" class="form-control col-lg-5" value="{{ nombreuAsignado }}" disabled="disabled">
+
                     </div>
 
-                    <div class="form-group ">
-                        <label for="usuarioID">Usuario ID</label>
-                        <input type="text" class="form-control col-lg-2" id="usuarioID" value="{{ usuarioID }}" disabled="disabled">
+                    <div class="form-group col-lg-10">
+
+                        <textarea class="form-control" rows="4" id="descripcion" placeholder="Digitar nota..."></textarea>
+
+                        <br>
+
+                        <button class="btn btn-success" id="addNota"><span>Guardar</span></button>
+                        <a href="{{ path('indexNotas',{ticketId: ticketId, uAsignadoId: uAsignadoId}) }}" class="btn btn-danger"><span>Cancelar</span></a>
+
                     </div>
 
-                    <div class="form-group">
-                        <label for="descripcion">Nota:</label>
-                        <textarea class="form-control" rows="5" id="descripcion"></textarea>
-                    </div>
 
 
-                    <button class="btn btn-success" id="addRol"><span>Guardar</span></button>
-                    <a href="{{ path('rolesIndex') }}" class="btn btn-danger"><span>Cancelar</span></a>
 
                 </form>
 
@@ -43,36 +53,36 @@
 
     <script>
 
-        function addRol(rol){
+        function addNota(nota){
 
            // alert(JSON.stringify(rol));
 
             $.ajax({
 
                 type:"POST",
-                data: JSON.stringify(rol),
-                url: Routing.generate('addRol'),
-                error: function () {
-
+                data: JSON.stringify(nota),
+                url: Routing.generate('addNotasTicket'),
+                error: function (data) {
+                    window.location = Routing.generate('indexNotas',{ticketId: nota.ticketID, uAsignadoId: nota.usuarioID});
                 },
                 success: function (data) {
-                   // alert(data);
+                    //alert(JSON.stringify(data));
 
-                    window.location = Routing.generate('rolesIndex');
+                    window.location = Routing.generate('indexNotas',{ticketId: nota.ticketID, uAsignadoId: nota.usuarioID});
                 }
             });
         }
 
         $(document).ready(function () {
 
-            $('#addRol').click(function () {
+            $('#addNota').click(function () {
 
-                var nombre = $('#nombre').val();
-                var departamentoProyecto = $('#departamentoProyecto').val();
+                var ticketId = $('#ticketId').val();
+                var uAsignadoId = $('#uAsignadoId').val();
                 var descripcion = $('#descripcion').val();
 
 
-                addRol({ nombre : nombre, departamentoProyecto : departamentoProyecto, descripcion : descripcion });
+                addNota({ ticketID : ticketId, usuarioID : uAsignadoId, descripcionNota : descripcion });
             });
         });
 

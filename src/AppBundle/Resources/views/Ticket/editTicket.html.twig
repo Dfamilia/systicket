@@ -21,8 +21,8 @@
         </div>
 
         <div class="form-group">
-            <label for="categoriaID">Categoria</label>
-            <input type="text" class="form-control" id="categoriaID" value="{{ ticket.categoriaID }}">
+            <label for="categoria">Categoria</label>
+            <input type="text" class="form-control" id="categoria" value="{{ ticket.categoria }}">
         </div>
 
         <div class="form-group">
@@ -36,17 +36,31 @@
         </div>
 
         <div class="form-group">
-            <label for="solicitante">Solicitante</label>
-            <input type="text" class="form-control" id="solicitante" value="{{ ticket.usuarioSolicitanteID }}">
+            <label for="usuarioSol">Solicitante</label>
+            <select id="usuarioSol" class="form-control">
+
+                <option value="0">---</option>
+                {% for cliente in uCliente %}
+                    <option value="{{ cliente["id"] }}">{{ cliente["username"] }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <div class="form-group">
-            <label for="usuarioAsig">Usuario Asignado</label>
-            <input type="text" class="form-control" id="usuarioAsig" value="{{ ticket.usuarioAsignadoID }}">
+            <label for="usuarioAsig">Asignado</label>
+            <select id="usuarioAsig" class="form-control">
+
+                <option value="0">---</option>
+                {% for asignado in uAsignado %}
+                    <option value="{{ asignado["id"] }}">{{ asignado["username"] }}</option>
+                {% endfor %}
+
+            </select>
         </div>
 
         <button type="button" id="udpTicket" class="btn btn-success"> <span>Actualizar</span> </button>
-        <a class="btn btn-danger" href="{{ path('ticket') }}"><span>Cancelar</span> </a>
+        <a class="btn btn-danger" href="{{ path('indexTicket') }}"><span>Cancelar</span> </a>
 
     </form>
 
@@ -61,7 +75,7 @@
 
          function  updTicket(ticket) {
 
-             alert(JSON.stringify(ticket));
+            // alert(JSON.stringify(ticket));
 
              $.ajax({
                  type: "PUT",
@@ -72,32 +86,31 @@
                  },
                  success: function (data) {
 
-                     window.location = Routing.generate('ticket');
+                     window.location = Routing.generate('indexTicket');
                  }
              });
 
          }
 
          $(document).ready(function () {
-             alert('ready');
 
              $('#udpTicket').click(function () {
-                    alert('click');
 
                  var id = $('#id').val();
                  var titulo = $('#titulo').val();
                  var descripcion = $('#descripcion').val();
-                 var categoriaID = $('#categoriaID').val();
+                 var categoria = $('#categoria').val();
                  var estado = $('#estado').val();
                  var prioridad = $('#prioridad').val();
-                 var solicitante = $('#solicitante').val();
-                 var usuarioAsig = $('#usuarioAsig').val();
+                 var usuarioSol = $('#usuarioSol option:selected').val();
+                 var usuarioAsig = $('#usuarioAsig option:selected').val();
 
-                 updTicket({ id: id, descripcionProblema : descripcion, categoriaID: categoriaID, estado: estado, prioridad: prioridad, usuarioSolicitanteID: solicitante, usuarioAsignadoID: usuarioAsig, titulo: titulo });
+                 updTicket({ id: id, descripcionProblema : descripcion, categoria: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: usuarioSol, usuarioAsignadoID: usuarioAsig, titulo: titulo });
 
              });
 
          });
+
      </script>
 
    

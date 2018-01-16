@@ -45,7 +45,7 @@ class Ticket
     /**
      * @var string
      *
-     * @ORM\Column(name="DescripcionProblema", type="string", length=255)
+     * @ORM\Column(name="DescripcionProblema", type="string", length=100)
      */
     private $descripcionProblema;
 
@@ -68,7 +68,7 @@ class Ticket
      *
      * @ORM\Column(name="Categoria", type="string", length=100)
      */
-    private $categoriaID;
+    private $categoria;
 
     /**
      * @var int
@@ -247,27 +247,27 @@ class Ticket
     }
 
     /**
-     * Set categoriaID
+     * Set categoria
      *
-     * @param string $categoriaID
+     * @param string $categoria
      *
      * @return Ticket
      */
-    public function setCategoriaID($categoriaID)
+    public function setCategoria($categoria)
     {
-        $this->categoriaID = $categoriaID;
+        $this->categoria = $categoria;
 
         return $this;
     }
 
     /**
-     * Get categoriaID
+     * Get categoria
      *
      * @return string
      */
-    public function getCategoriaID()
+    public function getCategoria()
     {
-        return $this->categoriaID;
+        return $this->categoria;
     }
 
     /**
