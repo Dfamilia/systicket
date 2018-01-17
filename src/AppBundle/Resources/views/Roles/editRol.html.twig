@@ -28,7 +28,7 @@
 
 
                     <button class="btn btn-success" id="updRol"><span>Guardar</span></button>
-                    <a href="{{ path('rolesIndex') }}" class="btn btn-danger"><span>Cancelar</span></a>
+                    <a href="{{ path('indexRoles') }}" class="btn btn-danger"><span>Cancelar</span></a>
 
                 </form>
 
@@ -52,14 +52,14 @@
 
                 type:"PUT",
                 data: JSON.stringify(rol),
-                url: Routing.generate('updRol', {id: rol.id}),
+                url: Routing.generate('updRoles', {id: rol.id}),
                 error: function () {
 
                 },
                 success: function (data) {
                     // alert(data);
 
-                    window.location = Routing.generate('rolesIndex');
+                    window.location = Routing.generate('indexRoles');
                 }
             });
         }

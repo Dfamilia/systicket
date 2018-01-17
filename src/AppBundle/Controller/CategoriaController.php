@@ -100,7 +100,6 @@ class CategoriaController extends FOSRestController
         }
 
         $newCategoria = json_decode($this->get('serializer')->serialize($categoria,'json'), true);
-        dump($newCategoria);
 
         return new JsonResponse($newCategoria);
 

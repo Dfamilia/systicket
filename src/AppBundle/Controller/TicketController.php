@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Ticket;
+use AppBundle\Entity\CategoriaTicket;
 use AppBundle\Form\TicketType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -93,8 +94,18 @@ class TicketController extends FOSRestController
         $cliente = array();
         $asignado = array();
 
+
         $usuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
         $usuarioW = $usuarioBD->findAll();
+
+        if (!empty($this->getDoctrine()->getRepository('AppBundle:CategoriaTicket')->findAll()))
+        {
+            $categoria = $this->getDoctrine()->getRepository('AppBundle:CategoriaTicket')->findAll();
+
+        }else
+            {
+             $categoria = array();
+            }
 
         if (!empty($usuarioW)) {
 
@@ -118,7 +129,7 @@ class TicketController extends FOSRestController
             $asignado[]=["id"=>0, "username"=>"none"];
         }
 
-        return $this->render('AppBundle:Ticket:newTicket.html.twig', array('uCliente'=> $cliente, "uAsignado"=>$asignado));
+        return $this->render('AppBundle:Ticket:newTicket.html.twig', array('uCliente'=> $cliente, "uAsignado"=>$asignado, "Categoria"=>$categoria ));
     }
 
 
@@ -136,8 +147,9 @@ class TicketController extends FOSRestController
         $cliente = array();
         $asignado = array();
 
-        $usuarioBD = $this->getDoctrine()->getRepository('AppBundle:Usuario');
-        $usuarioW = $usuarioBD->findAll();
+        $usuarioW = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findAll();
+
+        $categoria = $this->getDoctrine()->getRepository('AppBundle:CategoriaTicket')->findAll();
 
 
         if (!empty($usuarioW)) {
@@ -163,7 +175,7 @@ class TicketController extends FOSRestController
         }
 
 
-        return $this->render('AppBundle:Ticket:editTicket.html.twig', array("ticket"=>$data,'uCliente'=> $cliente, "uAsignado"=>$asignado));
+        return $this->render('AppBundle:Ticket:editTicket.html.twig', array("ticket"=>$data,'uCliente'=> $cliente, "uAsignado"=>$asignado, "Categoria"=>$categoria));
     }
 
 

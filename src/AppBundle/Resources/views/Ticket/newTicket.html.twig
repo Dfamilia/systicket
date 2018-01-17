@@ -19,24 +19,34 @@
 
         <div class="form-group">
             <label for="categoria">Categoria</label>
-            <input type="text" class="form-control" id="categoria" placeholder="---">
+
+            <select id="categoria" class="form-control">
+                {% for item in Categoria %}
+                    <option value="{{item.nombre }}">{{ item.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="form-group">
             <label for="estado">Estado</label>
-            <input type="text" class="form-control" id="estado" placeholder="---">
+            <select id="estado" class="form-control">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Completado">Completado</option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="prioridad">Prioridad</label>
-            <input type="text" class="form-control" id="prioridad" placeholder="---">
+            <select id="prioridad">
+                <option value="Normal">Normal</option>
+                <option value="Emergencia">Emergencia</option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="usuarioSol">Solicitante</label>
             <select id="usuarioSol" class="form-control">
-
-                <option value="0">---</option>
+                
                 {% for cliente in uCliente %}
                     <option value="{{ cliente["id"] }}">{{ cliente["username"] }}</option>
                 {% endfor %}
@@ -48,7 +58,6 @@
             <label for="usuarioAsig">Asignado</label>
             <select id="usuarioAsig" class="form-control">
 
-                <option value="0">---</option>
                 {% for asignado in uAsignado %}
                     <option value="{{ asignado["id"] }}">{{ asignado["username"] }}</option>
                 {% endfor %}
@@ -94,9 +103,9 @@
 
                 var titulo = $('#titulo').val();
                 var descripcion = $('#descripcion').val();
-                var categoria = $('#categoria').val();
-                var estado = $('#estado').val();
-                var prioridad = $('#prioridad').val();
+                var categoria = $('#categoria option:selected').val();
+                var estado = $('#estado option:selected').val();
+                var prioridad = $('#prioridad option:selected').val();
                 var usuarioSol = $('#usuarioSol option:selected').val();
                 var usuarioAsig = $('#usuarioAsig option:selected').val();
 

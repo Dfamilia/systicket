@@ -32,7 +32,7 @@
 
         function addCategoria(categoria){
 
-            alert(JSON.stringify(categoria));
+            //alert(JSON.stringify(categoria));
 
 
             $.ajax({
@@ -40,16 +40,15 @@
                 type:"POST",
                 data: JSON.stringify(categoria),
                 url: Routing.generate('addCategoria'),
-                success: function (data1) {
+                error: function (data) {
+                    console.log(JSON.stringify(data));
+                },
+                success: function (data) {
 
  //                   alert(JSON.stringify(data1));
                     window.location = Routing.generate('indexCategoria');
 
-                },
-                error: function (data) {
-                    console.log(JSON.stringify(data));
                 }
-
 
             });
         }

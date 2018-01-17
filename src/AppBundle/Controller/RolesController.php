@@ -4,11 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Roles;
 use AppBundle\Form\RolesType;
-use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -47,7 +45,7 @@ class RolesController extends Controller
      */
     public function newAction()
     {
-        return $this->render('AppBundle:Roles:newRoles.html.twig');
+        return $this->render('AppBundle:Roles:newRol.html.twig');
     }
 
     //================= editar =================//
@@ -62,7 +60,7 @@ class RolesController extends Controller
     {
         $data = json_decode($this->get('serializer')->serialize($rol, 'json'),true);
 
-        return $this->render('AppBundle:Roles:editRoles.html.twig',array('editRol'=>$data));
+        return $this->render('AppBundle:Roles:editRol.html.twig',array('editRol'=>$data));
 
     }
 
@@ -75,7 +73,7 @@ class RolesController extends Controller
     //================= Add ================//
 
     /**
-     * @Route("/new/", name="addRoles", options={"expose"=true})
+     * @Route("/new/", name="addRol", options={"expose"=true})
      * @Method("POST")
      * @param Request $request
      * @return JsonResponse
@@ -100,10 +98,9 @@ class RolesController extends Controller
             dump('invalid');
         }
 
-        $newRole = json_decode($this->get('serializer')->serialize($newRol, 'json'), true);
+        $newRoles = json_decode($this->get('serializer')->serialize($newRol, 'json'), true);
 
-        return new JsonResponse($newRole);
-
+        return new JsonResponse($newRoles);
     }
 
     //================= Upd(actualizar) =============//

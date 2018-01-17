@@ -26,7 +26,7 @@
 
 
                     <button class="btn btn-success" id="addRol"><span>Guardar</span></button>
-                    <a href="{{ path('rolesIndex') }}" class="btn btn-danger"><span>Cancelar</span></a>
+                    <a href="{{ path('indexRoles') }}" class="btn btn-danger"><span>Cancelar</span></a>
 
                 </form>
 
@@ -44,20 +44,20 @@
 
         function addRol(rol){
 
-           // alert(JSON.stringify(rol));
-
             $.ajax({
 
                 type:"POST",
                 data: JSON.stringify(rol),
                 url: Routing.generate('addRol'),
-                error: function () {
+                error: function (data) {
+                   // alert('error ' + JSON.stringify(data));
 
+                    window.location = Routing.generate('indexRoles');
                 },
                 success: function (data) {
-                   // alert(data);
+                  // alert(data);
 
-                    window.location = Routing.generate('rolesIndex');
+                    window.location = Routing.generate('indexRoles');
                 }
             });
         }

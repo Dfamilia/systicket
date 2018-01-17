@@ -44,6 +44,7 @@
                 <tbody>
 
                 {% set counter = 1 %}
+                {% set check = 0 %}
                 {% for items in usuarioList %}
 
                     <tr>
@@ -55,8 +56,11 @@
                         <td> {{ items.userPass }}</td>
                         <td> {{ items.tipoUser }}</td>
                         <td>
-                            {% for rol in usuarioRol %}
-                                {{ (items.rolID == rol["id"]) ? rol["nombre"] }}
+                            {% for rol in usuarioRol if check == 0 %}
+                                {% if items.rolID == rol["id"]  %}
+                                    {{ rol["nombre"] }}
+                                    {% set check = 1 %}
+                                {% endif %}
                             {% endfor %}
                         </td>
                         <td> {{ items.estado }}</td>
@@ -70,6 +74,8 @@
                     </tr>
 
                     {% set counter = counter + 1 %}
+                    {% set check = 0 %}
+
                 {% endfor %}
 
 
