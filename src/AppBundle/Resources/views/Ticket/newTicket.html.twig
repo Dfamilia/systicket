@@ -22,7 +22,7 @@
 
             <select id="categoria" class="form-control">
                 {% for item in Categoria %}
-                    <option value="{{item.nombre }}">{{ item.nombre }}</option>
+                    <option value="{{ item.nombre }}">{{ item.nombre }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label for="prioridad">Prioridad</label>
-            <select id="prioridad">
+            <select id="prioridad" class="form-control">
                 <option value="Normal">Normal</option>
                 <option value="Emergencia">Emergencia</option>
             </select>
@@ -109,7 +109,7 @@
                 var usuarioSol = $('#usuarioSol option:selected').val();
                 var usuarioAsig = $('#usuarioAsig option:selected').val();
 
-                addTicket({ descripcionProblema : descripcion, categoriad: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: usuarioSol, usuarioAsignadoID: usuarioAsig, titulo: titulo });
+                addTicket({ descripcionProblema : descripcion, categoria: categoria, estado: estado, prioridad: prioridad, usuarioSolicitanteID: usuarioSol, usuarioAsignadoID: usuarioAsig, titulo: titulo });
 
             });
 
